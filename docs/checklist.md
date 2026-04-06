@@ -1,6 +1,6 @@
 # 📖 Checklist de Avaliação | ID & RA
 
-> **Projeto:** Tô Aqui! (AutoPresence UTFPR)  
+> **Projeto:** Smart farm
 > **Disciplina:** Tópicos Especiais em Programação  
 > **Docente:** Roni Fabio Banaszewski
 
