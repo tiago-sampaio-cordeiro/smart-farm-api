@@ -1,0 +1,131 @@
+# Product Requirements Document (PRD) - Smart farm
+
+**Projeto:** Smart-farm-api
+**Versão:** 1.0.0
+
+---
+
+## 1. Visão Geral e Objetivo
+
+O setor de agronegócio sempre busca soluções que maximizem a produção no campo. Cada variavel importa na tomada de decisão e cada decisão tem um impacto significativo no resultado final. Acompanhar o desenvolvimento da lavoura desde o plantio da semente até a colheita envolve muitos parâmetros e fatores climáticos como umidade do solo, temperatura, luminosidade, chuva e vento e poder ter esses dados em tempo real aumenta e muito o poder de decisão dos envolvidos.
+A smart farm é uma solução desenvolvida com o propósito de acompanhar e analisar em tempo real a mudança dessas variáveis através de dados coletados por sensores IoT espalhados pela lavoura(dados simulados no momomento), esses dados são enviados em tempo real para aplicação smart farm e o agricultor pode tomar decisões mais conscientes em relação a sua lavoura.
+
+## 2. Glossário Ubíquo
+
+- **Usuário (Produtor Rural):** Responsável por gerenciar uma ou mais lavouras.
+- **Lavoura:** Área agrícola monitorada, associada a um usuário e contendo sensores IoT.
+- **Sensor:** Dispositivo responsável por coletar dados ambientais (temperatura, umidade, luminosidade).
+- **Medição:** Registro de dados coletados por um sensor em um determinado momento.
+- **Alerta:** Evento gerado pelo sistema quando uma medição ultrapassa limites configurados.
+- **Configuração de Parâmetros:** Limites definidos pelo usuário para geração de alertas.
+
+## 3. Atores e Permissões
+
+**Produtor Rural:**
+
+- Gerencia lavouras
+- Consulta dados e alertas
+
+- **Sensor IoT:**
+  - Envia dados para o sistema
+
+- **Sistema (Automático):**
+  - Processa medições
+  - Gera alertas
+  - Monitora status dos sensores
+
+## 4. Escopo Funcional, Histórias de Usuário e Critérios de Aceitação (MoSCoW)
+
+> **Instrução para a IA/Desenvolvedor:** Cada bloco abaixo representa uma necessidade de negócio. Uma história só é considerada "Done" quando todos os seus critérios de aceitação forem atendidos no sistema.
+
+### US01 - Autenticação por E-mail ou login social (Must Have)
+
+**Ator:** Produtor rural | **História:** Como usuário, quero fazer login via Google Auth ou email e senha para que o sistema confirme minha identidade cruzando minhas credenciais para que somente eu tenha acesso as informações referentes a minha lavoura.
+
+**Critérios de Aceitação:**
+
+- [ ] Login via email/senha ou Google
+- [ ] Retornar erro para credenciais inválidas
+- [ ] Gerar sessão autenticada
+
+### US02 - Dados organizados e em tempo real (Must Have)
+
+**Ator:** Produtor rural | **História:** Como usuário, quero que os dados coletados pelos sensores sejam organizados por fator climatico, lavoura e período na interface da aplicação para que eu possa ver todo o cenário da minha lavoura e tomar decisões caso necessário.
+
+**Critérios de Aceitação:**
+
+- [ ] Listar medições
+- [ ] Filtrar por lavoura
+- [ ] Filtrar por período (data inicial/final)
+
+### US03 - Alerta de sensores inativos ou com defeito (Must Have)
+
+**Ator:** Produtor rural | **História:** Como usuário, quero receber alertas de sensores inativos ou com defeitos para que eu possa substituir por outros sensores
+
+**Critérios de Aceitação:**
+
+- [ ] Sensor é considerado inativo se não enviar dados por um período configurável
+- [ ] Sistema deve registrar status do sensor (ativo/inativo)
+
+### US04 - Geração de alertas (Must Have)
+
+**Ator:** Sistema | **História:** Como sistema, quero enviar alertas ao usuário para que problemas futuros possam ser evitados
+
+**Critérios de Aceitação:**
+
+- [ ] Comparar medições com parâmetros configurados
+- [ ] Gerar alerta quando limite for ultrapassado
+- [ ] Associar alerta à medição
+
+### US05 - Analise de un sensor específico (Should Have)
+
+**Ator:** Produtor rural | **História:** Como usuário, quero acompanhar dados de um sensor específico para analisar seu comportamento ao longo do tempo.
+
+**Critérios de Aceitação:**
+
+- [ ] Filtrar medições por sensor
+- [ ]Ordenar por data
+
+### US06 - Alertas organizados por tipo (Could Have)
+
+**Ator:** Produtor rural | **História:** Como usuário, quero que os alertas emitidos sejam classificados conforme a gravidade do caso
+
+**Critérios de Aceitação:**
+
+- [ ] Alerta NORMAL, casos onde não necessita providencia imediata
+- [ ] Alerta MODERADO, casos onde a providencia nao precisa ser imediata mas a longo prazo pode piorar
+- [ ] Alerta CRITICO, casos onde necessita uma atitude rapida
+
+### US07 - (Won't Have)
+
+- Integração com sensores reais
+- Integração com APIs externas
+- Controle automático de irrigação
+- Dashboard frontend completo
+
+## 🛡️ 5. Regras de Negócio (Constraints)
+
+- **RN01 (Autenticação):** Usuários devem estar autenticados para acessar dados.
+- **RN02 (Relacionamento):** Cada usuário possui uma ou mais lavouras.
+- **RN03 (Sensores):** Cada lavoura possui um ou mais sensores.
+- **RN04 (Medições):** Cada sensor gera múltiplas medições ao longo do tempo.
+- **RN05 (Timestamp):** Toda medição deve conter data e hora de registro.
+- **RN06 (Parâmetros):** Limites de alerta são configurados por lavoura.
+- **RN07 (Alertas):** Um alerta é gerado quando uma medição ultrapassa limites configurados.
+- **RN08 (Sensor Inativo):** Sensor é considerado inativo se não enviar dados dentro de um intervalo definido.
+- **RN09 (Gravidade):** Alertas podem ser classificados como NORMAL, ALERTA ou CRÍTICO.
+
+## 🚫 6. Fora de Escopo (Non-goals)
+
+- Controle de dispositivos físicos
+- Integração com hardware real
+- Aplicações mobile ou web completas
+
+## ⚙️ 7. Requisitos Não Funcionais (Qualidade)
+
+- **Desempenho:** Resposta da API em até 500ms
+- **Escalabilidade:** Arquitetura preparada para crescimento horizontal
+- **Segurança:** Validação de dados via DTO
+- **Manutenibilidade:** Código modular (Controller, Service, DTO)
+- **Disponibilidade:** Sistema deve tratar erros sem interromper funcionamento
+- **Testabilidade:** Regras isoladas em services
