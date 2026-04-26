@@ -2,8 +2,8 @@
 
 O projeto utiliza arquitetura de Monorepo.
 
-- **`apps/api`**: Backend (NestJS)
-- **`apps/web`**: Frontend (ReactJS)
+- **`apps/api`**: Backend (NestJS 10)
+- **`apps/web`**: Frontend (ReactJS 19)
 - **`apps/extension`**: Vanilla TypeScript para manipulação de DOM.
 
 ---
