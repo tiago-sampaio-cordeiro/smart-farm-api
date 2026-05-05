@@ -8,7 +8,7 @@ O projeto utiliza arquitetura de Monorepo.
 
 ---
 
-## 🤖 2. Orquestração e Ecossistema de Contexto (MCP)
+## 2. Orquestração e Ecossistema de Contexto (MCP)
 
 **GitHub Projects MCP:** Utilize para sincronizar o status das User Stories (PRD) com o desenvolvimento técnico. As definições de "Done" devem seguir os Critérios de Aceitação das Issues.
 
@@ -18,7 +18,7 @@ O projeto utiliza arquitetura de Monorepo.
 
 ---
 
-## 📦 3. Stack Tecnológica e Bibliotecas
+## 3. Stack Tecnológica e Bibliotecas
 
 ### Core & Infraestrutura
 
@@ -42,9 +42,9 @@ O projeto utiliza arquitetura de Monorepo.
 
 ---
 
-## 🗄️ 4. Arquitetura de Dados
+## 4. Arquitetura de Dados
 
-### 📖 4.1 Glossário Técnico
+### 4.1 Glossário Técnico
 
 | Termo PRD | Entidade Técnica | Atributos                                                   |
 | --------- | ---------------- | ----------------------------------------------------------- |
@@ -57,7 +57,7 @@ O projeto utiliza arquitetura de Monorepo.
 
 ---
 
-### 🗄️ 4.2 Modelagem de Dados (Mermaid)
+### 4.2 Modelagem de Dados (Mermaid)
 
 ```mermaid
 erDiagram
@@ -116,7 +116,7 @@ erDiagram
 
 ---
 
-## 📝 5. Contratos Globais (DTOs & Interfaces)
+## 5. Contratos Globais (DTOs & Interfaces)
 
 > Tipagem TypeScript para validação de entrada (Request) e saída (Response).
 
@@ -129,9 +129,9 @@ erDiagram
 
 ---
 
-## 🏗️ 6. Scaffolding Macro (Arquitetura Backend)
+## 6. Scaffolding Macro (Arquitetura Backend)
 
-### 📂 6.1. Estrutura de Diretórios (Padrão Oficial NestJS CLI)
+### 6.1. Estrutura de Diretórios (Padrão Oficial NestJS CLI)
 
 > Organize a pasta `apps/api/src` utilizando estritamente a arquitetura padrão gerada pelo NestJS CLI (Flat Structure). Cada domínio de negócio deve ser uma pasta direta na raiz do `src/`.
 
@@ -145,7 +145,7 @@ erDiagram
 - **`src/common/`**: Código compartilhado globalmente (Guards de JWT, Exception Filter global, Decorators customizados).
 - **`src/prisma/`**: Módulo global contendo o `PrismaService` para injeção de dependência do banco de dados.
 
-### 🧠 6.2. Core Services (Singleton)
+### 6.2. Core Services (Singleton)
 
 | Service               | Responsabilidade Macro                                                                                                                                                                                                                                               |
 | :-------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -156,7 +156,7 @@ erDiagram
 
 ---
 
-## 🛡️ 7. Segurança (API Protection)
+## 7. Segurança (API Protection)
 
 - **ValidationPipe:** Configurado com `whitelist: true` para ignorar campos não mapeados nos DTOs.
 - **JWT Expiry:** Tokens de usuário com expiração configurável via `JWT_EXPIRES_IN`.
@@ -174,11 +174,11 @@ erDiagram
 
 ---
 
-## 📡 8. Contratos de API (Especificação OpenAPI)
+## 8. Contratos de API (Especificação OpenAPI)
 
 > Implemente os Controllers e DTOs seguindo rigorosamente estas definições.
 
-### 🔐 Módulo de Autenticação
+### Módulo de Autenticação
 
 - **POST** `/auth/login`
   - **Payload:** `{ "email": "string", "password": "string" }`
@@ -192,7 +192,7 @@ erDiagram
 
 ---
 
-### 🌱 Módulo de Lavouras
+### Módulo de Lavouras
 
 - **GET** `/farms`
   - **Regra:** Retorna apenas lavouras do usuário autenticado (RN02).
@@ -204,7 +204,7 @@ erDiagram
 
 ---
 
-### 📡 Módulo de Sensores
+### Módulo de Sensores
 
 - **GET** `/farms/:farmId/sensors`
   - **Regra:** Lista sensores de uma lavoura com status atualizado (RN03, US03).
@@ -216,7 +216,7 @@ erDiagram
 
 ---
 
-### 📊 Módulo de Medições
+### Módulo de Medições
 
 - **POST** `/measurements`
   - **Payload:** `{ "sensorId": "string", "temperatura": float, "umidade": float, "luminosidade": float, "timestamp": "datetime" }`
@@ -230,7 +230,7 @@ erDiagram
 
 ---
 
-### ⚠️ Módulo de Alertas
+### Módulo de Alertas
 
 - **GET** `/alerts`
   - **Query Params:** `farmId`, `severity` (opcional: `NORMAL | MODERADO | CRITICO`), `type` (opcional: `threshold_exceeded | sensor_offline`)
@@ -253,7 +253,7 @@ erDiagram
 
 ---
 
-## ⚙️ 9. Contrato de Configuração (Environment)
+## 9. Contrato de Configuração (Environment)
 
 > Nenhum dado sensível ou configurável deve estar _hardcoded_. Utilize o `@nestjs/config` (`ConfigModule`) para carregar e validar as variáveis em tempo de inicialização.
 
@@ -264,3 +264,18 @@ As seguintes variáveis são o contrato obrigatório para o arquivo `.env`:
 - `JWT_EXPIRES_IN` — Tempo de expiração da sessão (ex: `8h`).
 - `GOOGLE_CLIENT_ID` — ID do Client OAuth2 para validação do login social (US01).
 - `SENSOR_INACTIVITY_MINUTES` — Intervalo em minutos para considerar um sensor inativo (RN08).
+
+## 10.  Design Tokens
+
+Design system da aplicação
+
+#### Cores
+
+- **Primary:** #1D9E75
+- **Secondary:** #D85A30
+- **Tertiary:** #BA7517
+- **Neutral:** #727974
+
+#### Fonte
+
+- **Google Fonts:** Manrope
