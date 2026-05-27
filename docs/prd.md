@@ -38,6 +38,16 @@ A smart farm é uma solução desenvolvida com o propósito de acompanhar e anal
 
 > **Instrução para a IA/Desenvolvedor:** Cada bloco abaixo representa uma necessidade de negócio. Uma história só é considerada "Done" quando todos os seus critérios de aceitação forem atendidos no sistema.
 
+### US00 - Cadastro de Usuário (Must Have)
+**Ator:** Produtor rural | **História:** Como usuário, quero me cadastrar no sistema via e-mail e senha ou conta Google para que eu possa acessar e gerenciar as informações da minha lavoura.
+
+**Critérios de Aceitação:**
+- [ ] Cadastro via email/senha com validação de formato de e-mail
+- [ ] Cadastro via Google OAuth2
+- [ ] Retornar erro para e-mail já cadastrado
+- [ ] Senha armazenada com hash seguro
+- [ ] Retornar os dados do usuário criado sem expor a senha
+
 ### US01 - Autenticação por E-mail ou login social (Must Have)
 
 **Ator:** Produtor rural | **História:** Como usuário, quero fazer login via Google Auth ou email e senha para que o sistema confirme minha identidade cruzando minhas credenciais para que somente eu tenha acesso as informações referentes a minha lavoura.
