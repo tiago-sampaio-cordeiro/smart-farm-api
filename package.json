@@ -10,7 +10,15 @@
     "dev:api": "npm run start:dev -w apps/api",
     "web:dev": "npm run dev -w apps/web"
   },
-  "keywords": ["nestjs", "reactjs", "monorepo"],
+  "keywords": [
+    "nestjs",
+    "reactjs",
+    "monorepo"
+  ],
   "author": "Tiago Sampaio",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.15.1"
+  }
 }
