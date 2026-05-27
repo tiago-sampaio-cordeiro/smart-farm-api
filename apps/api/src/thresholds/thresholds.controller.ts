@@ -1,0 +1,38 @@
+import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put } from '@nestjs/common';
+import { Threshold } from 'src/Interfaces/threshold.interface';
+import { ThresholdsService } from './thresholds.service';
+
+@Controller('thresholds')
+export class ThresholdsController {
+    constructor(private readonly thresholdsService: ThresholdsService) { }
+
+    @Post()
+    @HttpCode(201)
+    create(@Body() body: Threshold) {
+        return this.thresholdsService.create(body);
+    }
+
+    @Get('farm/:farmId')
+    @HttpCode(200)
+    findByFarm(@Param('farmId') farmId: string) {
+        return this.thresholdsService.findByFarm(farmId);
+    }
+
+    @Get(':id')
+    @HttpCode(200)
+    findOne(@Param('id') id: string) {
+        return this.thresholdsService.findOne(id);
+    }
+
+    @Put(':id')
+    @HttpCode(200)
+    update(@Param('id') id: string, @Body() body: Partial<Threshold>) {
+        return this.thresholdsService.update(id, body);
+    }
+
+    @Delete(':id')
+    @HttpCode(204)
+    remove(@Param('id') id: string) {
+        this.thresholdsService.remove(id);
+    }
+}
