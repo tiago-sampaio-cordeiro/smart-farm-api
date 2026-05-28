@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post, Put } from '@nestjs/common';
 import { FarmsService } from './farms.service';
 import { Farm } from 'src/Interfaces/farm.interface';
+import { CreateFarmDto } from './dto/create-farm.dto';
 
 @Controller('farms')
 export class FarmsController {
@@ -9,8 +10,8 @@ export class FarmsController {
 
     @Post()
     @HttpCode(201)
-    create(@Body() body: Farm) {
-        return this.farmsService.create(body);
+    create(@Body() body: CreateFarmDto) {
+        return this.farmsService.create(body as Farm);
     }
 
     @Get()
