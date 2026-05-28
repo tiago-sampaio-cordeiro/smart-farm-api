@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put } from '@nestjs/common';
 import { Threshold } from 'src/Interfaces/threshold.interface';
 import { ThresholdsService } from './thresholds.service';
+import { CreateTheresholdDto } from './dto/create-thereshold.dto';
 
 @Controller('thresholds')
 export class ThresholdsController {
@@ -8,8 +9,8 @@ export class ThresholdsController {
 
     @Post()
     @HttpCode(201)
-    create(@Body() body: Threshold) {
-        return this.thresholdsService.create(body);
+    create(@Body() body: CreateTheresholdDto) {
+        return this.thresholdsService.create(body as Threshold);
     }
 
     @Get('farm/:farmId')
