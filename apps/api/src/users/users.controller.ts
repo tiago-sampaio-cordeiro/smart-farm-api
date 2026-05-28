@@ -1,7 +1,8 @@
-import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, Param, ParseIntPipe, Patch, Post, Put, Query } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from 'src/Interfaces/user.interface';
 import { CreateUserDto } from './dto/create-user.dto';
+import { QueryFilterDto } from './dto/query-filter.dto';
 
 @Controller('users')
 export class UsersController {
@@ -14,13 +15,13 @@ export class UsersController {
     }
 
     @Get()
-    findAll() {
-        return this.usersService.findAll();
+    findAll(@Query() query: QueryFilterDto) {
+        return this.usersService.findAll(query.filter, query.page);
     }
 
     @Get(':id')
-    findOne(@Param('id') id: string) {
-        return this.usersService.findOne(id);
+    findOne(@Param('id', ParseIntPipe) id: number) {
+        return this.usersService.findOne(String(id));
     }
 
     @Put(':id')

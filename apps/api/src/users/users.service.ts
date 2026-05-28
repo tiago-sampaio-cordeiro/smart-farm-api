@@ -11,10 +11,19 @@ export class UsersService {
         return user;
     }
 
-    findAll() {
-        return this.users;
-    }
+    findAll(filter?: string, page: number = 1): User[] {
+        let result = this.users;
 
+        if (filter) {
+            result = result.filter(user =>
+                user.name.toLowerCase().includes(filter.toLowerCase())
+            );
+        }
+
+        const limit = 10;
+        const start = (page - 1) * limit;
+        return result.slice(start, start + limit);
+    }
     findOne(id: string) {
         const user = this.users.find((user) => user.id === id);
         if (!user) throw new NotFoundException('Usuário não encontrado');
