@@ -1,5 +1,6 @@
 import { Controller, Get, HttpCode, Param, Query } from '@nestjs/common';
 import { AlertsService } from './alerts.service';
+import { QueryAlertDto } from './dto/query-alert.dto';
 
 @Controller('alerts')
 export class AlertsController {
@@ -7,11 +8,8 @@ export class AlertsController {
 
     @Get()
     @HttpCode(200)
-    findAll(
-        @Query('severity') severity?: string,
-        @Query('type') type?: string,
-    ) {
-        return this.alertsService.findAll(severity, type);
+    findAll(@Query() query: QueryAlertDto) {
+        return this.alertsService.findAll(query.severity, query.type);
     }
 
     @Get(':id')
