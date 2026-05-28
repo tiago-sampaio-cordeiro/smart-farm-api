@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post, Put } from '@nestjs/common';
 import { SensorsService } from './sensors.service';
 import { Sensor } from 'src/Interfaces/sensor.interface';
+import { CreateSensorDto } from './dto/create-sensor.dto';
 
 @Controller('farms/:farmId/sensors')
 export class SensorsController {
@@ -8,8 +9,8 @@ export class SensorsController {
 
     @Post()
     @HttpCode(201)
-    create(@Param('farmId') farmId: string, @Body() body: Sensor) {
-        return this.sensorsService.create({ ...body, farmId });
+    create(@Param('farmId') farmId: string, @Body() body: CreateSensorDto) {
+        return this.sensorsService.create({ ...body, farmId } as Sensor);
     }
 
     @Get()
