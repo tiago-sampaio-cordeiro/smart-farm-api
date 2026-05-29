@@ -1,6 +1,9 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
+import { HttpExceptionFilter } from './http-exception/http-exception.filter';
+import { TransformInterceptor } from './transform/transform.interceptor';
+
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -11,6 +14,10 @@ async function bootstrap() {
       forbidNonWhitelisted: true, // lança erro se o corpo contiver campos extras    
     }),
   );
+
+  app.useGlobalInterceptors(new TransformInterceptor());
+  app.useGlobalFilters(new HttpExceptionFilter());
+
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
