@@ -1,9 +1,11 @@
-import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post, Put, UseFilters } from '@nestjs/common';
 import { FarmsService } from './farms.service';
 import { Farm } from 'src/Interfaces/farm.interface';
 import { CreateFarmDto } from './dto/create-farm.dto';
+import { FarmNotFoundFilter } from './filters/farm-not-found.filter';
 
 @Controller('farms')
+@UseFilters(FarmNotFoundFilter)
 export class FarmsController {
 
     constructor(private readonly farmsService: FarmsService) { }

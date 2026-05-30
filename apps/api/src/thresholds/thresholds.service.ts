@@ -1,11 +1,17 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Threshold } from 'src/Interfaces/threshold.interface';
+import { DuplicateThresholdException } from './exceptions/duplicate-threshold.exception';
 
 @Injectable()
 export class ThresholdsService {
     private thresholds: Threshold[] = [];
 
     create(threshold: Threshold) {
+
+        const existing = this.thresholds.find(
+            t => t.farmId === threshold.farmId && t.type === threshold.type
+        );
+        if (existing) throw new DuplicateThresholdException(threshold.type, threshold.farmId);
         this.thresholds.push(threshold);
         return threshold;
     }

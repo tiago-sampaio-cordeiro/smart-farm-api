@@ -1,9 +1,11 @@
-import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post, Put, UseFilters } from '@nestjs/common';
 import { SensorsService } from './sensors.service';
 import { Sensor } from 'src/Interfaces/sensor.interface';
 import { CreateSensorDto } from './dto/create-sensor.dto';
+import { SensorInactiveFilter } from './filters/sensor-inactive.filter';
 
 @Controller('farms/:farmId/sensors')
+@UseFilters(SensorInactiveFilter)
 export class SensorsController {
     constructor(private readonly sensorsService: SensorsService) { }
 
