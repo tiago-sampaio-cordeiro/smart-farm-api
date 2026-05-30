@@ -1,9 +1,11 @@
-import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put, UseFilters } from '@nestjs/common';
 import { Threshold } from 'src/Interfaces/threshold.interface';
 import { ThresholdsService } from './thresholds.service';
 import { CreateTheresholdDto } from './dto/create-thereshold.dto';
+import { DuplicateThresholdFilter } from './filters/duplicate-threshold.filter';
 
 @Controller('thresholds')
+@UseFilters(DuplicateThresholdFilter)
 export class ThresholdsController {
     constructor(private readonly thresholdsService: ThresholdsService) { }
 

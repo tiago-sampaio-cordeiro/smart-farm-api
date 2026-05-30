@@ -1,11 +1,20 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Measurement } from 'src/Interfaces/measurement.interface';
+import { ThresholdExceededException } from './exceptions/threshold-exceeded.exception';
+import { ThresholdsService } from 'src/thresholds/thresholds.service';
 
 @Injectable()
 export class MeasurementsService {
     private measurements: Measurement[] = [];
 
     create(measurement: Measurement) {
+        // const threshold = this.thresholds.find(
+        //     t => t.farmId === measurement.farmId && t.type === 'temperatura'
+        // );
+
+        // if (threshold && measurement.temperatura > threshold.max) {
+        //     throw new ThresholdExceededException('temperatura', measurement.temperatura, threshold.max);
+        // }
         this.measurements.push(measurement);
         return measurement;
     }

@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Farm } from 'src/Interfaces/farm.interface';
+import { FarmNotFoundException } from './exceptions/farm-not-found.exception';
 
 @Injectable()
 export class FarmsService {
@@ -16,7 +17,7 @@ export class FarmsService {
 
     findOne(id: string) {
         const farm = this.farms.find((farm) => farm.id === id);
-        if (!farm) throw new NotFoundException('Fazenda não encontrada');
+        if (!farm) throw new FarmNotFoundException(id);
         return farm;
     }
 

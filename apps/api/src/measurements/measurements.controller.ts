@@ -1,9 +1,11 @@
-import { Body, Controller, Get, HttpCode, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Param, Post, Query, UseFilters } from '@nestjs/common';
 import { MeasurementsService } from './measurements.service';
 import { Measurement } from 'src/Interfaces/measurement.interface';
 import { CreateMeasurementDto } from './dto/create-measurement.dto';
+import { ThresholdExceededFilter } from './filters/threshold-exceeded.filter';
 
 @Controller('measurements')
+@UseFilters(ThresholdExceededFilter)
 export class MeasurementsController {
     constructor(private readonly measurementsService: MeasurementsService) { }
 

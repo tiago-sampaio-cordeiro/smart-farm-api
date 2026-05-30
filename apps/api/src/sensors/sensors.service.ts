@@ -1,5 +1,6 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { Sensor } from '../Interfaces/sensor.interface'
+import { Injectable } from '@nestjs/common';
+import { Sensor } from '../Interfaces/sensor.interface';
+import { SensorInactiveException } from './exceptions/sensor-inactive.exception';
 
 @Injectable()
 export class SensorsService {
@@ -20,7 +21,7 @@ export class SensorsService {
 
     findOne(id: string) {
         const sensor = this.sensors.find((sensor) => sensor.id === id);
-        if (!sensor) throw new NotFoundException('Sensor não encontrado');
+        if (!sensor) throw new SensorInactiveException(id);
         return sensor;
     }
 
@@ -32,7 +33,7 @@ export class SensorsService {
 
     remove(id: string) {
         const index = this.sensors.findIndex((sensor) => sensor.id === id);
-        if (index === -1) throw new NotFoundException('Sensor não encontrado');
+        if (index === -1) throw new SensorInactiveException(id);
         this.sensors.splice(index, 1);
     }
 }
