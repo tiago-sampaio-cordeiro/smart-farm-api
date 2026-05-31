@@ -1,0 +1,124 @@
+// ============================================================
+// Prisma Schema — Smart Farm API
+// Gerado com base no ERD definido em docs/sdd.md
+// Provider: PostgreSQL (Neon.tech)
+// ============================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ============================================================
+// Enums
+// ============================================================
+
+enum SensorStatus {
+  ativo
+  inativo
+}
+
+enum AlertSeverity {
+  NORMAL
+  MODERADO
+  CRITICO
+}
+
+enum AlertType {
+  threshold_exceeded
+  sensor_offline
+}
+
+// ============================================================
+// Models
+// ============================================================
+
+model User {
+  id        String   @id @default(cuid())
+  name      String   
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+
+  farms Farm[]
+
+  @@index([email])
+  @@map("users")
+}
+
+model Farm {
+  id     String @id @default(cuid())
+  name   String
+  userId String
+
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sensors    Sensor[]
+  thresholds Threshold[]
+
+  @@index([userId])
+  @@map("farms")
+}
+
+model Sensor {
+  id       String       @id @default(cuid())
+  type     String
+  status   SensorStatus @default(ativo)
+  farmId   String
+  lastSeen DateTime?
+
+  farm         Farm          @relation(fields: [farmId], references: [id], onDelete: Cascade)
+  measurements Measurement[]
+
+  @@index([farmId])
+  @@index([status])
+  @@map("sensors")
+}
+
+model Measurement {
+  id           String   @id @default(cuid())
+  sensorId     String
+  temperatura  Float?
+  umidade      Float?
+  luminosidade Float?
+  timestamp    DateTime
+
+  sensor Sensor  @relation(fields: [sensorId], references: [id], onDelete: Cascade)
+  alerts Alert[]
+
+  @@index([sensorId])
+  @@index([timestamp])
+  @@map("measurements")
+}
+
+model Alert {
+  id            String        @id @default(cuid())
+  type          AlertType
+  severity      AlertSeverity
+  measurementId String?
+  sensorId      String?
+  createdAt     DateTime      @default(now())
+
+  measurement Measurement? @relation(fields: [measurementId], references: [id], onDelete: SetNull)
+
+  @@index([measurementId])
+  @@index([severity])
+  @@index([type])
+  @@map("alerts")
+}
+
+model Threshold {
+  id     String @id @default(cuid())
+  farmId String
+  type   String
+  min    Float
+  max    Float
+
+  farm Farm @relation(fields: [farmId], references: [id], onDelete: Cascade)
+
+  @@unique([farmId, type])
+  @@index([farmId])
+  @@map("thresholds")
+}

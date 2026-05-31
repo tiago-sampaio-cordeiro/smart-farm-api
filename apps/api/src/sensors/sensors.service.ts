@@ -1,39 +1,38 @@
-import { Injectable } from '@nestjs/common';
-import { Sensor } from '../Interfaces/sensor.interface';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { CreateSensorDto } from './dto/create-sensor.dto';
+import { Prisma } from '@prisma/client';
 import { SensorInactiveException } from './exceptions/sensor-inactive.exception';
 
 @Injectable()
 export class SensorsService {
-    private sensors: Sensor[] = [];
+    constructor(private prisma: PrismaService) { }
 
-    create(sensor: Sensor) {
-        this.sensors.push(sensor);
+    async create(data: Prisma.SensorUncheckedCreateInput) {
+        return await this.prisma.sensor.create({ data });
+    }
+
+    async findAll() {
+        return await this.prisma.sensor.findMany();
+    }
+
+    async findByFarm(farmId: string) {
+        return await this.prisma.sensor.findMany({ where: { farmId } });
+    }
+
+    async findOne(id: string) {
+        const sensor = await this.prisma.sensor.findUnique({ where: { id } });
+        if (!sensor) throw new NotFoundException('Sensor não encontrado');
         return sensor;
     }
 
-    findAll() {
-        return this.sensors;
+    async update(id: string, data: Prisma.SensorUpdateInput) {
+        await this.findOne(id);
+        return await this.prisma.sensor.update({ where: { id }, data });
     }
 
-    findByFarm(farmId: string) {
-        return this.sensors.filter(sensor => sensor.farmId === farmId);
-    }
-
-    findOne(id: string) {
-        const sensor = this.sensors.find((sensor) => sensor.id === id);
-        if (!sensor) throw new SensorInactiveException(id);
-        return sensor;
-    }
-
-    update(id: string, data: Partial<Sensor>) {
-        const sensor = this.findOne(id);
-        Object.assign(sensor, data);
-        return sensor;
-    }
-
-    remove(id: string) {
-        const index = this.sensors.findIndex((sensor) => sensor.id === id);
-        if (index === -1) throw new SensorInactiveException(id);
-        this.sensors.splice(index, 1);
+    async remove(id: string) {
+        await this.findOne(id);
+        return await this.prisma.sensor.delete({ where: { id } });
     }
 }

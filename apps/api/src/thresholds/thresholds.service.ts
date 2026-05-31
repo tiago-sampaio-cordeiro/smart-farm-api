@@ -1,40 +1,51 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Threshold } from 'src/Interfaces/threshold.interface';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { Prisma } from '@prisma/client';
 import { DuplicateThresholdException } from './exceptions/duplicate-threshold.exception';
+import { CreateTheresholdDto } from './dto/create-thereshold.dto';
 
 @Injectable()
 export class ThresholdsService {
-    private thresholds: Threshold[] = [];
+    constructor(private prisma: PrismaService) { }
 
-    create(threshold: Threshold) {
+    async create(data: CreateTheresholdDto) {
+        const existing = await this.prisma.threshold.findFirst({
+            where: {
+                farmId: data.farmId,
+                type: data.type,
+            },
+        });
+        if (existing) throw new DuplicateThresholdException(data.type, data.farmId);
 
-        const existing = this.thresholds.find(
-            t => t.farmId === threshold.farmId && t.type === threshold.type
-        );
-        if (existing) throw new DuplicateThresholdException(threshold.type, threshold.farmId);
-        this.thresholds.push(threshold);
-        return threshold;
+        return await this.prisma.threshold.create({
+            data: {
+                type: data.type,
+                min: data.min,
+                max: data.max,
+                farm: {
+                    connect: { id: data.farmId }
+                }
+            }
+        });
     }
 
-    findByFarm(farmId: string) {
-        return this.thresholds.filter(t => t.farmId === farmId);
+    async findByFarm(farmId: string) {
+        return await this.prisma.threshold.findMany({ where: { farmId } });
     }
 
-    findOne(id: string) {
-        const threshold = this.thresholds.find(t => t.id === id);
+    async findOne(id: string) {
+        const threshold = await this.prisma.threshold.findUnique({ where: { id } });
         if (!threshold) throw new NotFoundException('Threshold não encontrado');
         return threshold;
     }
 
-    update(id: string, updateData: Partial<Threshold>) {
-        const threshold = this.findOne(id);
-        Object.assign(threshold, updateData);
-        return threshold;
+    async update(id: string, data: Prisma.ThresholdUpdateInput) {
+        await this.findOne(id);
+        return await this.prisma.threshold.update({ where: { id }, data });
     }
 
-    remove(id: string) {
-        const index = this.thresholds.findIndex(t => t.id === id);
-        if (index === -1) throw new NotFoundException('Threshold não encontrado');
-        this.thresholds.splice(index, 1);
+    async remove(id: string) {
+        await this.findOne(id);
+        return await this.prisma.threshold.delete({ where: { id } });
     }
 }

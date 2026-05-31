@@ -1,44 +1,40 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { User } from 'src/Interfaces/user.interface';
+import { Prisma } from '@prisma/client';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { CreateUserDto } from './dto/create-user.dto';
 
 @Injectable()
 export class UsersService {
+    constructor(private prisma: PrismaService) { }
 
-    private users: User[] = [];
-
-    create(user: User) {
-        this.users.push(user);
-        return user;
+    async create(data: CreateUserDto) {
+        return await this.prisma.user.create({ data });
     }
 
-    findAll(filter?: string, page: number = 1): User[] {
-        let result = this.users;
-
-        if (filter) {
-            result = result.filter(user =>
-                user.name.toLowerCase().includes(filter.toLowerCase())
-            );
-        }
-
+    async findAll(filter?: string, page: number = 1) {
         const limit = 10;
-        const start = (page - 1) * limit;
-        return result.slice(start, start + limit);
+        return await this.prisma.user.findMany({
+            where: filter ? {
+                email: { contains: filter, mode: 'insensitive' }
+            } : undefined,
+            skip: (page - 1) * limit,
+            take: limit,
+        });
     }
-    findOne(id: string) {
-        const user = this.users.find((user) => user.id === id);
+
+    async findOne(id: string) {
+        const user = await this.prisma.user.findUnique({ where: { id } });
         if (!user) throw new NotFoundException('Usuário não encontrado');
         return user;
     }
 
-    update(id: string, data: Partial<User>) {
-        const user = this.findOne(id);
-        Object.assign(user, data);
-        return user;
+    async update(id: string, data: Prisma.UserUpdateInput) {
+        await this.findOne(id);
+        return await this.prisma.user.update({ where: { id }, data });
     }
 
-    remove(id: string) {
-        const index = this.users.findIndex((user) => user.id === id);
-        if (index === -1) throw new NotFoundException('Usuario não encontrado');
-        this.users.splice(index, 1);
+    async remove(id: string) {
+        await this.findOne(id);
+        return await this.prisma.user.delete({ where: { id } });
     }
 }

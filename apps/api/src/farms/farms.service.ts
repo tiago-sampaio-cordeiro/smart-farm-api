@@ -1,36 +1,35 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { Farm } from 'src/Interfaces/farm.interface';
+import { Injectable } from '@nestjs/common';
 import { FarmNotFoundException } from './exceptions/farm-not-found.exception';
+import { CreateFarmDto } from './dto/create-farm.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class FarmsService {
-    private farms: Farm[] = []
+    constructor(private prisma: PrismaService) { }
 
-    create(farm: Farm) {
-        this.farms.push(farm);
-        return farm;
+    async create(data: CreateFarmDto) {
+        return await this.prisma.farm.create({ data })
     }
 
-    findAll() {
-        return this.farms;
+    async findAll() {
+        return this.prisma.farm.findMany();
     }
 
-    findOne(id: string) {
-        const farm = this.farms.find((farm) => farm.id === id);
+    async findOne(id: string) {
+        const farm = await this.prisma.farm.findUnique({ where: { id } });
         if (!farm) throw new FarmNotFoundException(id);
         return farm;
     }
 
-    update(id: string, data: Partial<Farm>) {
-        const farm = this.findOne(id);
-        Object.assign(farm, data);
-        return farm;
+    async update(id: string, data: Prisma.FarmUpdateInput) {
+        await this.findOne(id);
+        return await this.prisma.farm.update({ where: { id }, data })
     }
 
-    remove(id: string) {
-        const index = this.farms.findIndex((farm) => farm.id === id);
-        if (index === -1) throw new NotFoundException('Fazenda não encontrada');
-        this.farms.splice(index, 1);
+    async remove(id: string) {
+        await this.findOne(id);
+        return await this.prisma.farm.delete({ where: { id } })
     }
 
 
