@@ -8,13 +8,13 @@ export class AlertsController {
 
     @Get()
     @HttpCode(200)
-    findAll(@Query() query: QueryAlertDto) {
+    async findAll(@Query() query: QueryAlertDto) {
         return this.alertsService.findAll(query.severity, query.type);
     }
 
     @Get(':id')
     @HttpCode(200)
-    findOne(@Param('id') id: string) {
+    async findOne(@Param('id') id: string) {
         return this.alertsService.findOne(id);
     }
 }

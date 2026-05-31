@@ -1,25 +1,26 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Alert } from 'src/Interfaces/alert.interface';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class AlertsService {
-    private alerts: Alert[] = [];
+    constructor(private prisma: PrismaService) { }
 
-    create(alert: Alert) {
-        this.alerts.push(alert);
-        return alert;
+    async create(data: Prisma.AlertCreateInput) {
+        return await this.prisma.alert.create({ data });
     }
 
-    findAll(severity?: string, type?: string) {
-        return this.alerts.filter(alert => {
-            if (severity && alert.severity !== severity) return false;
-            if (type && alert.type !== type) return false;
-            return true;
+    async findAll(severity?: string, type?: string) {
+        return await this.prisma.alert.findMany({
+            where: {
+                ...(severity && { severity: severity as any }),
+                ...(type && { type: type as any }),
+            },
         });
     }
 
-    findOne(id: string) {
-        const alert = this.alerts.find(alert => alert.id === id);
+    async findOne(id: string) {
+        const alert = await this.prisma.alert.findUnique({ where: { id } });
         if (!alert) throw new NotFoundException('Alerta não encontrado');
         return alert;
     }
