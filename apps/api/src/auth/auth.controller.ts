@@ -4,6 +4,8 @@ import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { AuthGuard } from '@nestjs/passport';
+import { Roles } from './roles.decorator';
+import { RolesGuard } from './roles.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -21,7 +23,8 @@ export class AuthController {
         return this.authService.login(body.email, body.password);
     }
 
-    @UseGuards(JwtAuthGuard)
+    @Roles('USER')
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Get('perfil')
     async getPerfil(@Req() request) {
         return {

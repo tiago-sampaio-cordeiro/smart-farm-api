@@ -1,7 +1,10 @@
-import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { QueryFilterDto } from './dto/query-filter.dto';
+import { Roles } from 'src/auth/roles.decorator';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { RolesGuard } from 'src/auth/roles.guard';
 
 @Controller('users')
 export class UsersController {
@@ -13,7 +16,15 @@ export class UsersController {
         return this.usersService.create(body);
     }
 
+    @Get('admin')
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles('ADMIN')
+    getAdminData() {
+        return { message: 'Bem-vindo, Admin!' };
+    }
+
     @Get()
+    @UseGuards(JwtAuthGuard)
     findAll(@Query() query: QueryFilterDto) {
         return this.usersService.findAll(query.filter, query.page);
     }
