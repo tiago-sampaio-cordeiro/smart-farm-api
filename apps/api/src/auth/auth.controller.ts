@@ -3,6 +3,7 @@ import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { JwtAuthGuard } from './jwt-auth.guard';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('auth')
 export class AuthController {
@@ -27,5 +28,17 @@ export class AuthController {
             message: 'Você acessou uma rota protegida!',
             user: request.user,
         };
+    }
+
+    @Get('google')
+    @UseGuards(AuthGuard('google'))
+    async googleLogin() {
+        // Redireciona para o Google automaticamente
+    }
+
+    @Get('google/callback')
+    @UseGuards(AuthGuard('google'))
+    async googleCallback(@Req() request) {
+        return this.authService.googleLogin(request.user);
     }
 }

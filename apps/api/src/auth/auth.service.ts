@@ -51,4 +51,11 @@ export class AuthService {
             access_token: token,
         };
     }
+
+    async googleLogin(user: any) {
+        const payload = { sub: user.id, email: user.email };
+        const token = await this.jwtService.signAsync(payload);
+
+        return { access_token: token };
+    }
 }
