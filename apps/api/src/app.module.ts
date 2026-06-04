@@ -10,9 +10,10 @@ import { AlertsModule } from './alerts/alerts.module';
 import { ThresholdsModule } from './thresholds/thresholds.module';
 import { LoggerMiddleware } from './logger/logger.middleware';
 import { PrismaModule } from './prisma/prisma.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [DatabaseModule, UsersModule, FarmsModule, SensorsModule, MeasurementsModule, AlertsModule, ThresholdsModule, PrismaModule],
+  imports: [DatabaseModule, UsersModule, FarmsModule, SensorsModule, MeasurementsModule, AlertsModule, ThresholdsModule, PrismaModule, AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })
