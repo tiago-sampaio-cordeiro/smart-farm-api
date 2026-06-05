@@ -7,6 +7,7 @@ import { AuthController } from './auth.controller';
 import { JwtStrategy } from './jwt.strategy';  // (criaremos em breve)
 import { GoogleStrategy } from './google.strategy';
 import { PrismaService } from 'src/prisma/prisma.service';  // ajuste o path conforme seu projeto
+import { RolesGuard } from './roles.guard';
 
 @Module({
   imports: [
@@ -17,7 +18,7 @@ import { PrismaService } from 'src/prisma/prisma.service';  // ajuste o path con
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, GoogleStrategy, PrismaService],
+  providers: [AuthService, JwtStrategy, GoogleStrategy, PrismaService, RolesGuard],
   exports: [AuthService],
 })
 export class AuthModule { }
