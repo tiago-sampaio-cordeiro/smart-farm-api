@@ -14,7 +14,7 @@ O projeto utiliza arquitetura de Monorepo.
 
 - **Neon.tech MCP:** Interface obrigatória para introspecção e migração do banco de dados PostgreSQL. O esquema gerado pelo Prisma deve ser validado contra o estado real do banco via este MCP.
 - **Prisma MCP:** Sincronização entre schema e banco real
-- **Stitch MCP (Google):** Utilizado para a geração e prototipação de interfaces Angular. Consulte este contexto para garantir que os componentes sigam os padrões visuais e funcionais definidos no Stitch.
+- **Stitch MCP (Google):** Utilizado para a geração e prototipação de interfaces ReactJS.
 
 ---
 
@@ -25,8 +25,8 @@ O projeto utiliza arquitetura de Monorepo.
 - Node.js v20.x LTS
 - PostgreSQL 16
 - NestJS v10.x
-- ReactJS (Vite ou Next opcional)
-- Prisma ORM v5.x
+- ReactJS 19.x
+- Prisma ORM v7.x
 - Jest + Supertest
 
 ---
@@ -34,7 +34,7 @@ O projeto utiliza arquitetura de Monorepo.
 ### Bibliotecas Permitidas
 
 - **WebSockets:** Socket.io v4.x (integrado via `@nestjs/platform-socket.io` v10.x).
-- **Auth:** JWT (`@nestjs/jwt`)
+- **Auth:** JWT (`@nestjs/jwt`, `@nestjs/passport`, `passport`, `passport-jwt`)
 - **Validação:** `class-validator` + `class-transformer`
 - **Docs:** `@nestjs/swagger`
 - **Tempo:** `date-fns`
@@ -48,11 +48,11 @@ O projeto utiliza arquitetura de Monorepo.
 
 | Termo PRD | Entidade Técnica | Atributos                                                   |
 | --------- | ---------------- | ----------------------------------------------------------- |
-| Usuário   | `User`           | id, email, password                                         |
+| Usuário   | `User`           | id, email, name, roles,password                                         |
 | Lavoura   | `Farm`           | id, name, userId                                            |
 | Sensor    | `Sensor`         | id, type, status, farmId                                    |
 | Medição   | `Measurement`    | id, sensorId, temperatura, umidade, luminosidade, timestamp |
-| Alerta    | `Alert`          | id, type, severity, measurementId                           |
+| Alerta    | `Alert`          | id, type, severity, sensorId, measurementId                           |
 | Parâmetro | `Threshold`      | id, farmId, min, max, type                                  |
 
 ---
@@ -70,7 +70,9 @@ erDiagram
     USER {
         string id PK
         string email
-        string password
+        string password,
+        string name,
+        string roles,
         datetime createdAt
     }
 
@@ -101,6 +103,7 @@ erDiagram
         string id PK
         string type
         string severity
+        string sensorId
         string measurementId FK
         datetime createdAt
     }
@@ -120,7 +123,8 @@ erDiagram
 
 > Tipagem TypeScript para validação de entrada (Request) e saída (Response).
 
-- **LoginDTO:** `{ email: string, password: string }` → Retorna Token JWT + dados do usuário.
+- **LoginDTO:** `{ email: string, password: string }` → Retorna Token JWT.
+- **RegisterDTO:** `{ email: string, password: string, name?: string }` → Registra um novo usuário com role USER por padrão. Retorna dados do usuário sem a senha.
 - **CreateFarmDTO:** `{ name: string }` → Cria nova lavoura vinculada ao usuário autenticado.
 - **CreateSensorDTO:** `{ type: string, farmId: string }` → Registra um sensor em uma lavoura.
 - **CreateMeasurementDTO:** `{ sensorId: string, temperatura?: float, umidade?: float, luminosidade?: float, timestamp: datetime }` → Registra uma medição. Timestamp obrigatório (RN05).
@@ -160,15 +164,16 @@ erDiagram
 
 - **ValidationPipe:** Configurado com `whitelist: true` para ignorar campos não mapeados nos DTOs.
 - **JWT Expiry:** Tokens de usuário com expiração configurável via `JWT_EXPIRES_IN`.
+- **Autorização por Roles (RBAC):** Implementado via `RolesGuard` + decorator `@Roles`. Dois níveis de acesso: `USER` (acesso às próprias lavouras e recursos associados) e `ADMIN` (acesso total ao gerenciamento de usuários). O role padrão ao registrar é `USER`.
 - **CORS:** Restrito ao domínio do Frontend.
 - **Ownership Guard:** Todas as rotas de lavoura, sensor e alerta devem verificar se o recurso pertence ao usuário autenticado antes de retornar dados (RN01, RN02).
 - **Tratamento de Erros (Exception Filter):** Implementar um `GlobalExceptionFilter`. Toda falha deve retornar ao frontend neste exato formato JSON:
   ```json
   {
-    "statusCode": 400,
-    "timestamp": "2026-04-05T10:00:00.000Z",
-    "path": "/api/rota",
-    "message": "Descrição detalhada do erro ou array de validações"
+    "success": false,
+  "statusCode": 400,
+  "path": "/api/rota",
+  "message": "Descrição detalhada do erro ou array de validações"
   }
   ```
 
@@ -183,12 +188,49 @@ erDiagram
 - **POST** `/auth/login`
   - **Payload:** `{ "email": "string", "password": "string" }`
   - **Regra:** Validar credenciais. Retornar `401` para credenciais inválidas (US01).
-  - **Retorno:** `{ "accessToken": "string", "user": { "id", "email" } }`
+  - **Retorno:** `{ "access_token": "string" }`
 
-- **POST** `/auth/google`
-  - **Payload:** `{ "idToken": "string" }`
-  - **Regra:** Validar token Google OAuth2. Criar usuário caso não exista (US01).
-  - **Retorno:** `{ "accessToken": "string", "user": { "id", "email" } }`
+- **POST** `/auth/register`
+  - **Payload:** `{ "email": "string", "password": "string", "name": "string" }`
+  - **Regra:** Verificar email duplicado. Armazenar senha com hash bcrypt. Role padrão USER.
+  - **Retorno:** `{ "id", "name", "email", "createdAt" }`
+
+- **GET** `/auth/perfil`
+  - **Regra:** Rota protegida. Retorna dados do usuário autenticado via token JWT (US01).
+  - **Retorno:** `{ "id", "name", "email", "createdAt" }`
+
+- **GET** `/auth/google`
+  - **Regra:** Redireciona para o fluxo de autenticação OAuth2 do Google.
+  - **Retorno:** Redireciona para `/auth/google/callback`
+
+- **GET** `/auth/google/callback`
+  - **Regra:** Callback do Google OAuth2. Cria usuário caso não exista. Gera token JWT.
+  - **Retorno:** `{ "access_token": "string" }`
+---
+
+### Módulo de Usuários
+
+- **GET** `/users`
+  - **Regra:** Somente ADMIN. Lista todos os usuários cadastrados.
+  - **Retorno:** `[{ "id", "name", "email", "roles", "createdAt" }]`
+
+- **GET** `/users/:id`
+  - **Regra:** Usuário autenticado.
+  - **Retorno:** `{ "id", "name", "email", "roles", "createdAt" }`
+
+- **PUT** `/users/:id`
+  - **Payload:** `{ "name": "string", "email": "string", "password": "string" }`
+  - **Regra:** Somente ADMIN.
+  - **Retorno:** `{ "id", "name", "email", "createdAt" }`
+
+- **PATCH** `/users/:id`
+  - **Payload:** `{ "name?": "string", "email?": "string", "password?": "string" }`
+  - **Regra:** Somente ADMIN.
+  - **Retorno:** `{ "id", "name", "email", "createdAt" }`
+
+- **DELETE** `/users/:id`
+  - **Regra:** Somente ADMIN.
+  - **Retorno:** `204 No Content`
 
 ---
 
@@ -237,11 +279,11 @@ erDiagram
   - **Regra:** Retorna alertas das lavouras do usuário autenticado, filtráveis por severidade e tipo (US03, US06, RN09).
   - **Retorno:** `[{ "id", "type", "severity", "measurementId", "sensorId", "createdAt" }]`
 
-> **Job de inatividade (US03 — RN08):** O `SensorStatusService` executa periodicamente via `@Cron`, configurado pelo valor de `SENSOR_INACTIVITY_MINUTES` (`.env`). Para cada sensor cuja `lastSeen` ultrapassar o intervalo definido, o serviço atualiza `status` para `inativo` e gera um alerta do tipo `sensor_offline` com severidade `MODERADO`. Esse alerta é retornável pela rota acima usando `?type=sensor_offline`.
+  - **Job de inatividade (US03 — RN08):** O `SensorStatusService` executa periodicamente via `@Cron`, configurado pelo valor de `SENSOR_INACTIVITY_MINUTES` (`.env`). Para cada sensor cuja `lastSeen` ultrapassar o intervalo definido, o serviço atualiza `status` para `inativo` e gera um alerta do tipo `sensor_offline` com severidade `MODERADO`. Esse alerta é retornável pela rota acima usando `?type=sensor_offline`.
 
 ---
 
-### ⚙️ Módulo de Thresholds
+### Módulo de Thresholds
 
 - **POST** `/thresholds`
   - **Payload:** `{ "farmId": "string", "type": "string", "min": float, "max": float }`
@@ -263,6 +305,7 @@ As seguintes variáveis são o contrato obrigatório para o arquivo `.env`:
 - `JWT_SECRET` — Chave para assinar o token de sessão do usuário.
 - `JWT_EXPIRES_IN` — Tempo de expiração da sessão (ex: `8h`).
 - `GOOGLE_CLIENT_ID` — ID do Client OAuth2 para validação do login social (US01).
+- `GOOGLE_CLIENT_SECRET` — Secret do Client OAuth2 para validação do login social (US01).
 - `SENSOR_INACTIVITY_MINUTES` — Intervalo em minutos para considerar um sensor inativo (RN08).
 
 ## 10.  Design Tokens

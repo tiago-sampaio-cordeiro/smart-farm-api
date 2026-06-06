@@ -21,32 +21,35 @@ A smart farm é uma solução desenvolvida com o propósito de acompanhar e anal
 
 ## 3. Atores e Permissões
 
+**Administrador:**
+  - Gerencia usuários do sistema
+  - Acesso total a todos os recursos
+
 **Produtor Rural:**
+  - Gerencia lavouras
+  - Consulta dados e alertas
 
-- Gerencia lavouras
-- Consulta dados e alertas
-
-- **Sensor IoT:**
+**Sensor IoT:**
   - Envia dados para o sistema
 
-- **Sistema (Automático):**
+**Sistema (Automático):**
   - Processa medições
   - Gera alertas
   - Monitora status dos sensores
 
 ## 4. Escopo Funcional, Histórias de Usuário e Critérios de Aceitação (MoSCoW)
 
-> **Instrução para a IA/Desenvolvedor:** Cada bloco abaixo representa uma necessidade de negócio. Uma história só é considerada "Done" quando todos os seus critérios de aceitação forem atendidos no sistema.
+**Instrução para a IA/Desenvolvedor:** Cada bloco abaixo representa uma necessidade de negócio. Uma história só é considerada "Done" quando todos os seus critérios de aceitação forem atendidos no sistema.
 
 ### US00 - Cadastro de Usuário (Must Have)
 **Ator:** Produtor rural | **História:** Como usuário, quero me cadastrar no sistema via e-mail e senha ou conta Google para que eu possa acessar e gerenciar as informações da minha lavoura.
 
 **Critérios de Aceitação:**
-- [ ] Cadastro via email/senha com validação de formato de e-mail
-- [ ] Cadastro via Google OAuth2
-- [ ] Retornar erro para e-mail já cadastrado
-- [ ] Senha armazenada com hash seguro
-- [ ] Retornar os dados do usuário criado sem expor a senha
+- [x] Cadastro via email/senha
+- [x] Cadastro via Google OAuth2
+- [x] Retornar erro para e-mail já cadastrado
+- [x] Senha armazenada com hash seguro
+- [x] Retornar os dados do usuário criado sem expor a senha
 
 ### US01 - Autenticação por E-mail ou login social (Must Have)
 
@@ -54,9 +57,9 @@ A smart farm é uma solução desenvolvida com o propósito de acompanhar e anal
 
 **Critérios de Aceitação:**
 
-- [ ] Login via email/senha ou Google
-- [ ] Retornar erro para credenciais inválidas
-- [ ] Gerar sessão autenticada
+- [x] Login via email/senha ou Google
+- [x] Retornar erro para credenciais inválidas
+- [x] Gerar sessão autenticada
 
 ### US02 - Dados organizados e em tempo real (Must Have)
 
@@ -106,12 +109,22 @@ A smart farm é uma solução desenvolvida com o propósito de acompanhar e anal
 - [ ] Alerta MODERADO, casos onde a providencia nao precisa ser imediata mas a longo prazo pode piorar
 - [ ] Alerta CRITICO, casos onde necessita uma atitude rapida
 
-### US07 - (Won't Have)
+### US07 - Funcionalidades Fora de Escopo (Won't Have)
 
 - Integração com sensores reais
 - Integração com APIs externas
 - Controle automático de irrigação
 - Dashboard frontend completo
+
+### US08 - Gerenciamento de Usuários (Must Have)
+**Ator:** Administrador | **História:** Como administrador, quero gerenciar os usuários do sistema para controlar quem tem acesso à plataforma.
+
+**Critérios de Aceitação:**
+- [ ] Listar todos os usuários
+- [ ] Buscar usuário por ID
+- [ ] Atualizar dados de um usuário
+- [ ] Remover um usuário
+- [ ] Somente ADMIN pode acessar essas operações
 
 ## 🛡️ 5. Regras de Negócio (Constraints)
 
@@ -123,7 +136,12 @@ A smart farm é uma solução desenvolvida com o propósito de acompanhar e anal
 - **RN06 (Parâmetros):** Limites de alerta são configurados por lavoura.
 - **RN07 (Alertas):** Um alerta é gerado quando uma medição ultrapassa limites configurados.
 - **RN08 (Sensor Inativo):** Sensor é considerado inativo se não enviar dados dentro de um intervalo definido.
-- **RN09 (Gravidade):** Alertas podem ser classificados como NORMAL, ALERTA ou CRÍTICO.
+- **RN09 (Gravidade):** Alertas podem ser classificados como NORMAL, MODERADO ou CRÍTICO.
+- **RN10 (Autorização):** O sistema possui dois níveis de acesso: USER e ADMIN. O role padrão ao registrar é USER.
+- **RN11 (Senha):** Senhas devem ser armazenadas com hash bcrypt, nunca em texto puro.
+- **RN12 (Gerenciamento de Usuários):** Somente ADMIN pode gerenciar usuários.
+- **RN13 (Permissões):** Usuário autenticado pode gerenciar suas próprias lavouras, sensores, medições e alertas. Somente ADMIN pode listar, atualizar e remover usuários.
+
 
 ## 🚫 6. Fora de Escopo (Non-goals)
 
@@ -135,7 +153,7 @@ A smart farm é uma solução desenvolvida com o propósito de acompanhar e anal
 
 - **Desempenho:** Resposta da API em até 500ms
 - **Escalabilidade:** Arquitetura preparada para crescimento horizontal
-- **Segurança:** Validação de dados via DTO
+- **Segurança:** Autenticação via JWT, autorização por roles (RBAC), hash de senhas com bcrypt, validação de dados via DTO.
 - **Manutenibilidade:** Código modular (Controller, Service, DTO)
 - **Disponibilidade:** Sistema deve tratar erros sem interromper funcionamento
 - **Testabilidade:** Regras isoladas em services

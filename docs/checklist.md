@@ -17,11 +17,11 @@
 
 ## ⚙️ RA2 - Desenvolvimento Backend Assistido por IA
 
-- [ ] **ID5:** O código NestJS mantém **separação estrita de camadas** arquiteturais (Controllers, Services, Modules).
-- [ ] **ID6:** Aplicou **DTOs** e `ValidationPipes` (com `whitelist`) para blindar as entradas da API.
-- [ ] **ID7:** Implementou operações **CRUD relacionais** utilizando Prisma ORM.
-- [ ] **ID8:** Configurou **autenticação JWT** e protegeu rotas através de controle de acesso (Roles/Guards).
-- [ ] **ID9:** Padronizou o tráfego com **Interceptors** para respostas e **Exception Filters** globais para erros.
+- [x] **ID5:** O código NestJS mantém **separação estrita de camadas** arquiteturais (Controllers, Services, Modules).
+- [x] **ID6:** Aplicou **DTOs** e `ValidationPipes` (com `whitelist`) para blindar as entradas da API.
+- [x] **ID7:** Implementou operações **CRUD relacionais** utilizando Prisma ORM.
+- [x] **ID8:** Configurou **autenticação JWT** e protegeu rotas através de controle de acesso (Roles/Guards).
+- [x] **ID9:** Padronizou o tráfego com **Interceptors** para respostas e **Exception Filters** globais para erros.
 
 ---
 
@@ -34,8 +34,8 @@
 
 ## 🎨 RA4 - Prototipagem e Integração Frontend
 
-- [ ] **ID12:** A API do backend expõe documentação **Swagger (OpenAPI)** atualizada e interativa.
-- [ ] **ID13:** Materializou o PRD em **interfaces visuais** (React/Angular/Vue) utilizando prototipagem assistida por IA.
+- [x] **ID12:** A API do backend expõe documentação **Swagger (OpenAPI)** atualizada e interativa.
+- [x] **ID13:** Materializou o PRD em **interfaces visuais** (React/Angular/Vue) utilizando prototipagem assistida por IA.
 - [ ] **ID14:** A interface consome os dados reais da API NestJS de forma síncrona, lidando corretamente com os **tokens JWT**.
 
 ---
@@ -47,5 +47,3 @@
 - [ ] **ID17:** Realizou o **deploy** da aplicação em domínio público (nuvem), conectada a um banco de dados relacional em produção (Neon.tech).
 
 ---
-
-_Este checklist deve ser mantido na pasta `/docs` do repositório para acompanhamento do progresso da equipe._
