@@ -13,6 +13,7 @@ export class MeasurementsService {
     async findAll(sensorId?: string) {
         return await this.prisma.measurement.findMany({
             where: sensorId ? { sensorId } : undefined,
+            orderBy: { timestamp: 'asc' },
         });
     }
 
