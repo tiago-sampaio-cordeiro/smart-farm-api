@@ -120,11 +120,11 @@ A smart farm é uma solução desenvolvida com o propósito de acompanhar e anal
 **Ator:** Administrador | **História:** Como administrador, quero gerenciar os usuários do sistema para controlar quem tem acesso à plataforma.
 
 **Critérios de Aceitação:**
-- [ ] Listar todos os usuários
-- [ ] Buscar usuário por ID
-- [ ] Atualizar dados de um usuário
-- [ ] Remover um usuário
-- [ ] Somente ADMIN pode acessar essas operações
+- [x] Listar todos os usuários
+- [x] Buscar usuário por ID
+- [x] Atualizar dados de um usuário
+- [x] Remover um usuário
+- [x] Somente ADMIN pode acessar essas operações
 
 ## 🛡️ 5. Regras de Negócio (Constraints)
 
