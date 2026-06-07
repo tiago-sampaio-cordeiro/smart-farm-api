@@ -51,12 +51,18 @@ describe('ThresholdsController', () => {
   });
 
   it('findOne deve delegar ao ThresholdsService', async () => {
-    const threshold = { id: 'threshold-id-1', farmId: 'farm-id-1', type: 'TEMPERATURA' };
+    const threshold = {
+      id: 'threshold-id-1',
+      farmId: 'farm-id-1',
+      type: 'TEMPERATURA',
+    };
     mockThresholdsService.findOne.mockResolvedValue(threshold);
 
     const result = await controller.findOne('threshold-id-1');
 
-    expect(mockThresholdsService.findOne).toHaveBeenCalledWith('threshold-id-1');
+    expect(mockThresholdsService.findOne).toHaveBeenCalledWith(
+      'threshold-id-1',
+    );
     expect(result).toEqual(threshold);
   });
 
@@ -64,9 +70,14 @@ describe('ThresholdsController', () => {
     const threshold = { id: 'threshold-id-1', max: 50 };
     mockThresholdsService.update.mockResolvedValue(threshold);
 
-    const result = await controller.update('threshold-id-1', { max: 50 } as any);
+    const result = await controller.update('threshold-id-1', {
+      max: 50,
+    } as any);
 
-    expect(mockThresholdsService.update).toHaveBeenCalledWith('threshold-id-1', { max: 50 });
+    expect(mockThresholdsService.update).toHaveBeenCalledWith(
+      'threshold-id-1',
+      { max: 50 },
+    );
     expect(result).toEqual(threshold);
   });
 

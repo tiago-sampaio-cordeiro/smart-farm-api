@@ -3,9 +3,14 @@ import { PrismaClient } from '@prisma/client';
 import { PrismaNeon } from '@prisma/adapter-neon';
 
 @Injectable()
-export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
+export class PrismaService
+  extends PrismaClient
+  implements OnModuleInit, OnModuleDestroy
+{
   constructor() {
-    const adapter = new PrismaNeon({ connectionString: process.env.DATABASE_URL });
+    const adapter = new PrismaNeon({
+      connectionString: process.env.DATABASE_URL,
+    });
     super({ adapter });
   }
 

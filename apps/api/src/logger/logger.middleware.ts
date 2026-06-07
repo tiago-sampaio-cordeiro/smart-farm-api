@@ -3,7 +3,6 @@ import { NextFunction, Request, Response } from 'express';
 
 @Injectable()
 export class LoggerMiddleware implements NestMiddleware {
-
   // Utilizamos o Logger nativo do NestJS para mensagens mais bonitas no terminal
   private logger = new Logger('HTTP');
 

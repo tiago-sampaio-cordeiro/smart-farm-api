@@ -5,8 +5,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import { HttpExceptionFilter } from './http-exception/http-exception.filter';
 import { TransformInterceptor } from './transform/transform.interceptor';
-import { writeFileSync } from 'fs';
-
+// import { writeFileSync } from 'fs';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -14,7 +13,7 @@ async function bootstrap() {
     new ValidationPipe({
       transform: true, // converte automaticamente os tipos (ex: string para number)
       whitelist: true, // remove propriedades não declaradas nos DTOs
-      forbidNonWhitelisted: true, // lança erro se o corpo contiver campos extras    
+      forbidNonWhitelisted: true, // lança erro se o corpo contiver campos extras
     }),
   );
 

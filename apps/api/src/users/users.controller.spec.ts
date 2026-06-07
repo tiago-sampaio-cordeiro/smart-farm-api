@@ -15,9 +15,7 @@ describe('UsersController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UsersController],
-      providers: [
-        { provide: UsersService, useValue: mockUsersService },
-      ],
+      providers: [{ provide: UsersService, useValue: mockUsersService }],
     }).compile();
 
     controller = module.get<UsersController>(UsersController);
@@ -54,7 +52,9 @@ describe('UsersController', () => {
 
     const result = await controller.update('user-id-1', { name: 'Atualizado' });
 
-    expect(mockUsersService.update).toHaveBeenCalledWith('user-id-1', { name: 'Atualizado' });
+    expect(mockUsersService.update).toHaveBeenCalledWith('user-id-1', {
+      name: 'Atualizado',
+    });
     expect(result).toEqual(updated);
   });
 

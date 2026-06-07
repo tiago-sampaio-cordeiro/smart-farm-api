@@ -62,30 +62,44 @@ describe('FarmsService', () => {
 
   describe('findOne', () => {
     it('deve retornar uma plantação quando encontrada', async () => {
-      const farm = { id: 'farm-id-1', name: 'Plantação A', userId: 'user-id-1' };
+      const farm = {
+        id: 'farm-id-1',
+        name: 'Plantação A',
+        userId: 'user-id-1',
+      };
       mockPrismaService.farm.findUnique.mockResolvedValue(farm);
 
       const result = await service.findOne('farm-id-1');
 
-      expect(mockPrismaService.farm.findUnique).toHaveBeenCalledWith({ where: { id: 'farm-id-1' } });
+      expect(mockPrismaService.farm.findUnique).toHaveBeenCalledWith({
+        where: { id: 'farm-id-1' },
+      });
       expect(result).toEqual(farm);
     });
 
     it('deve lançar FarmNotFoundException quando a plantação não for encontrada', async () => {
       mockPrismaService.farm.findUnique.mockResolvedValue(null);
 
-      await expect(service.findOne('id-invalido')).rejects.toThrow(FarmNotFoundException);
+      await expect(service.findOne('id-invalido')).rejects.toThrow(
+        FarmNotFoundException,
+      );
     });
   });
 
   describe('update', () => {
     it('deve atualizar e retornar a plantação quando encontrada', async () => {
-      const farm = { id: 'farm-id-1', name: 'Plantação A', userId: 'user-id-1' };
+      const farm = {
+        id: 'farm-id-1',
+        name: 'Plantação A',
+        userId: 'user-id-1',
+      };
       const updatedFarm = { ...farm, name: 'Plantação A Atualizada' };
       mockPrismaService.farm.findUnique.mockResolvedValue(farm);
       mockPrismaService.farm.update.mockResolvedValue(updatedFarm);
 
-      const result = await service.update('farm-id-1', { name: 'Plantação A Atualizada' });
+      const result = await service.update('farm-id-1', {
+        name: 'Plantação A Atualizada',
+      });
 
       expect(mockPrismaService.farm.update).toHaveBeenCalledWith({
         where: { id: 'farm-id-1' },
@@ -97,27 +111,37 @@ describe('FarmsService', () => {
     it('deve lançar FarmNotFoundException quando a plantação não existir', async () => {
       mockPrismaService.farm.findUnique.mockResolvedValue(null);
 
-      await expect(service.update('id-invalido', { name: 'Plantação Nova' })).rejects.toThrow(FarmNotFoundException);
+      await expect(
+        service.update('id-invalido', { name: 'Plantação Nova' }),
+      ).rejects.toThrow(FarmNotFoundException);
       expect(mockPrismaService.farm.update).not.toHaveBeenCalled();
     });
   });
 
   describe('remove', () => {
     it('deve remover a plantação quando encontrada', async () => {
-      const farm = { id: 'farm-id-1', name: 'Plantação A', userId: 'user-id-1' };
+      const farm = {
+        id: 'farm-id-1',
+        name: 'Plantação A',
+        userId: 'user-id-1',
+      };
       mockPrismaService.farm.findUnique.mockResolvedValue(farm);
       mockPrismaService.farm.delete.mockResolvedValue(farm);
 
       const result = await service.remove('farm-id-1');
 
-      expect(mockPrismaService.farm.delete).toHaveBeenCalledWith({ where: { id: 'farm-id-1' } });
+      expect(mockPrismaService.farm.delete).toHaveBeenCalledWith({
+        where: { id: 'farm-id-1' },
+      });
       expect(result).toEqual(farm);
     });
 
     it('deve lançar FarmNotFoundException quando a plantação não existir', async () => {
       mockPrismaService.farm.findUnique.mockResolvedValue(null);
 
-      await expect(service.remove('id-invalido')).rejects.toThrow(FarmNotFoundException);
+      await expect(service.remove('id-invalido')).rejects.toThrow(
+        FarmNotFoundException,
+      );
       expect(mockPrismaService.farm.delete).not.toHaveBeenCalled();
     });
   });

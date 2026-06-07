@@ -68,7 +68,9 @@ describe('AuthService', () => {
       const result = await service.register(email, password, name);
 
       // Assert
-      expect(mockPrismaService.user.findUnique).toHaveBeenCalledWith({ where: { email } });
+      expect(mockPrismaService.user.findUnique).toHaveBeenCalledWith({
+        where: { email },
+      });
       expect(bcrypt.hash).toHaveBeenCalledWith(password, 10);
       expect(mockPrismaService.user.create).toHaveBeenCalledWith({
         data: { email, password: hashedPassword, name },
@@ -80,10 +82,15 @@ describe('AuthService', () => {
     it('deve lançar ConflictException quando o email já estiver em uso', async () => {
       // Arrange
       const email = 'existente@email.com';
-      mockPrismaService.user.findUnique.mockResolvedValue({ id: 'existing-id', email });
+      mockPrismaService.user.findUnique.mockResolvedValue({
+        id: 'existing-id',
+        email,
+      });
 
       // Act & Assert
-      await expect(service.register(email, 'senha', 'Nome')).rejects.toThrow(ConflictException);
+      await expect(service.register(email, 'senha', 'Nome')).rejects.toThrow(
+        ConflictException,
+      );
       expect(mockPrismaService.user.create).not.toHaveBeenCalled();
     });
   });
@@ -112,7 +119,9 @@ describe('AuthService', () => {
       const result = await service.login(email, password);
 
       // Assert
-      expect(mockPrismaService.user.findUnique).toHaveBeenCalledWith({ where: { email } });
+      expect(mockPrismaService.user.findUnique).toHaveBeenCalledWith({
+        where: { email },
+      });
       expect(bcrypt.compare).toHaveBeenCalledWith(password, user.password);
       expect(mockJwtService.signAsync).toHaveBeenCalledWith({
         sub: user.id,
@@ -127,21 +136,26 @@ describe('AuthService', () => {
       mockPrismaService.user.findUnique.mockResolvedValue(null);
 
       // Act & Assert
-      await expect(service.login('naoexiste@email.com', 'senha')).rejects.toThrow(
-        UnauthorizedException,
-      );
+      await expect(
+        service.login('naoexiste@email.com', 'senha'),
+      ).rejects.toThrow(UnauthorizedException);
     });
 
     it('deve lançar UnauthorizedException quando a senha estiver incorreta', async () => {
       // Arrange
-      const user = { id: 'id', email: 'user@email.com', password: 'hash', roles: [] };
+      const user = {
+        id: 'id',
+        email: 'user@email.com',
+        password: 'hash',
+        roles: [],
+      };
       mockPrismaService.user.findUnique.mockResolvedValue(user);
       (bcrypt.compare as jest.Mock).mockResolvedValue(false);
 
       // Act & Assert
-      await expect(service.login('user@email.com', 'senha_errada')).rejects.toThrow(
-        UnauthorizedException,
-      );
+      await expect(
+        service.login('user@email.com', 'senha_errada'),
+      ).rejects.toThrow(UnauthorizedException);
     });
   });
 
