@@ -1,4 +1,4 @@
-import { Controller, Get, HttpCode, Param, Query } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Param, Post, Query } from '@nestjs/common';
 import { AlertsService } from './alerts.service';
 import { QueryAlertDto } from './dto/query-alert.dto';
 import { ApiBearerAuth, ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -6,11 +6,20 @@ import { RolesGuard } from 'src/auth/roles.guard';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { Roles } from 'src/auth/roles.decorator';
 import { UseGuards } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 
 @ApiTags('alerts')
 @Controller('alerts')
 export class AlertsController {
     constructor(private readonly alertsService: AlertsService) { }
+
+    // metodo create só serve para testes
+
+    // @Post()
+    // @HttpCode(201)
+    // async create(@Body() body: Prisma.AlertCreateInput) {
+    //     return this.alertsService.create(body);
+    // }
 
     @ApiOperation({ summary: 'Listar todos os alertas com filtro e paginação' })
     @ApiQuery({ name: 'severity', required: false, description: 'Severidade do alerta' })
