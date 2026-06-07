@@ -27,6 +27,10 @@ jobs:
       - name: Gerar Prisma Client
         run: npx prisma generate
         working-directory: apps/api
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
       - name: Rodar testes
         run: npm run test -w apps/api
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
