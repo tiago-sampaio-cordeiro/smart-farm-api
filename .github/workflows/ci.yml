@@ -20,6 +20,9 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
+      
+      - name: Lint
+        run: npm run lint -w apps/api
 
       - name: Instalar dependências
         run: npm install

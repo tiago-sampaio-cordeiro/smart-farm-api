@@ -170,6 +170,13 @@ describe('UsersService', () => {
       expect(mockPrismaService.user.update).toHaveBeenCalledWith({
         where: { id: 'user-id-1' },
         data: { name: 'Alice Atualizada' },
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          roles: true,
+          createdAt: true,
+        },
       });
       expect(result).toEqual(updatedUser);
     });
@@ -208,6 +215,13 @@ describe('UsersService', () => {
       // Assert
       expect(mockPrismaService.user.delete).toHaveBeenCalledWith({
         where: { id: 'user-id-1' },
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          roles: true,
+          createdAt: true,
+        },
       });
       expect(result).toEqual(user);
     });

@@ -1,4 +1,4 @@
-# 📖 Checklist de Avaliação | ID & RA
+# Checklist de Avaliação | ID & RA
 
 > **Projeto:** Smart farm
 > **Disciplina:** Tópicos Especiais em Programação  
@@ -6,7 +6,7 @@
 
 ---
 
-## 🎯 RA1 - Arquitetura, Engenharia de Requisitos com IA e Gestão Ágil
+## RA1 - Arquitetura, Engenharia de Requisitos com IA e Gestão Ágil
 
 - [x] **ID1:** Estruturou o **PRD** e o **SDD** (Diagrama Mermaid) de forma clara, utilizando a IA para modelar o negócio.
 - [x] **ID2:** A aplicação foi estruturada em formato de **Monorepo** (Front + Back) no GitHub.
@@ -15,7 +15,7 @@
 
 ---
 
-## ⚙️ RA2 - Desenvolvimento Backend Assistido por IA
+## RA2 - Desenvolvimento Backend Assistido por IA
 
 - [x] **ID5:** O código NestJS mantém **separação estrita de camadas** arquiteturais (Controllers, Services, Modules).
 - [x] **ID6:** Aplicou **DTOs** e `ValidationPipes` (com `whitelist`) para blindar as entradas da API.
@@ -25,14 +25,14 @@
 
 ---
 
-## 🧪 RA3 - Qualidade de Software e TDD Guiado por IA
+## RA3 - Qualidade de Software e TDD Guiado por IA
 
 - [x] **ID10:** Orquestrou a IA no fluxo **TDD**, gerando testes automatizados (Jest) baseados nas Issues antes da implementação da lógica.
 - [x] **ID11:** Os **testes** locais ou no pipeline executam com sucesso, cobrindo caminhos de sucesso e erro.
 
 ---
 
-## 🎨 RA4 - Prototipagem e Integração Frontend
+## RA4 - Prototipagem e Integração Frontend
 
 - [x] **ID12:** A API do backend expõe documentação **Swagger (OpenAPI)** atualizada e interativa.
 - [x] **ID13:** Materializou o PRD em **interfaces visuais** (React/Angular/Vue) utilizando prototipagem assistida por IA.
@@ -40,7 +40,7 @@
 
 ---
 
-## 🚀 RA5 - Pipeline CI/CD e Implantação Contínua
+## RA5 - Pipeline CI/CD e Implantação Contínua
 
 - [ ] **ID15:** As credenciais e **variáveis sensíveis** (como a `DATABASE_URL` da nuvem) estão seguras, ocultas do GitHub e injetadas via `ConfigModule`.
 - [ ] **ID16:** Configurou esteira de **CI (Continuous Integration)** via GitHub Actions para validação automática de código (Jest/Linting) antes do merge.

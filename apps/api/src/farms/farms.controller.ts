@@ -13,7 +13,6 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { FarmsService } from './farms.service';
-import { Farm } from 'src/Interfaces/farm.interface';
 import { CreateFarmDto } from './dto/create-farm.dto';
 import { FarmNotFoundFilter } from './filters/farm-not-found.filter';
 import {
@@ -26,6 +25,7 @@ import {
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { Roles } from 'src/auth/roles.decorator';
 import { RolesGuard } from 'src/auth/roles.guard';
+import { Prisma } from '@prisma/client';
 
 @ApiTags('farms')
 @Controller('farms')
@@ -43,7 +43,7 @@ export class FarmsController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   create(@Body() body: CreateFarmDto) {
-    return this.farmsService.create(body as Farm);
+    return this.farmsService.create(body);
   }
 
   @ApiOperation({ summary: 'Listar todas as plantações' })
@@ -84,7 +84,7 @@ export class FarmsController {
   @Roles('USER')
   @Put(':id')
   @HttpCode(HttpStatus.OK)
-  update(@Param('id') id: string, @Body() body: Partial<Farm>) {
+  update(@Param('id') id: string, @Body() body: Prisma.FarmUpdateInput) {
     return this.farmsService.update(id, body);
   }
 
@@ -101,7 +101,7 @@ export class FarmsController {
   @Roles('USER')
   @Patch(':id')
   @HttpCode(HttpStatus.OK)
-  partialUpdate(@Param('id') id: string, @Body() body: Partial<Farm>) {
+  partialUpdate(@Param('id') id: string, @Body() body: Prisma.FarmUpdateInput) {
     return this.farmsService.update(id, body);
   }
 
