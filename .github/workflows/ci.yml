@@ -28,7 +28,10 @@ jobs:
         run: node_modules/.bin/eslint "apps/api/src/**/*.ts" "apps/api/test/**/*.ts"
 
       - name: Instalar dependências
-        run: npm install
+        run: npm install --include=dev
+
+      - name: Debug - verificar eslint
+        run: ls node_modules/.bin/ | grep eslint
 
       - name: Gerar Prisma Client
         run: npx prisma generate
