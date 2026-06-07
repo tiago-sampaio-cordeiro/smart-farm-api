@@ -16,9 +16,7 @@ describe('FarmsController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [FarmsController],
-      providers: [
-        { provide: FarmsService, useValue: mockFarmsService },
-      ],
+      providers: [{ provide: FarmsService, useValue: mockFarmsService }],
     }).compile();
 
     controller = module.get<FarmsController>(FarmsController);
@@ -66,7 +64,9 @@ describe('FarmsController', () => {
 
     const result = await controller.update('farm-id-1', { name: 'Atualizado' });
 
-    expect(mockFarmsService.update).toHaveBeenCalledWith('farm-id-1', { name: 'Atualizado' });
+    expect(mockFarmsService.update).toHaveBeenCalledWith('farm-id-1', {
+      name: 'Atualizado',
+    });
     expect(result).toEqual(farm);
   });
 

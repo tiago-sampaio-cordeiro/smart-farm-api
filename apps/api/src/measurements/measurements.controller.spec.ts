@@ -28,7 +28,13 @@ describe('MeasurementsController', () => {
   });
 
   it('create deve delegar ao MeasurementsService', async () => {
-    const dto = { sensorId: 'sensor-id-1', temperature: 25, umidade: 80, luminosidade: 100, timestamp: new Date('2026-01-01T00:00:00.000Z') };
+    const dto = {
+      sensorId: 'sensor-id-1',
+      temperature: 25,
+      umidade: 80,
+      luminosidade: 100,
+      timestamp: new Date('2026-01-01T00:00:00.000Z'),
+    };
     const measurement = { id: 'meas-id-1', ...dto };
     mockMeasurementsService.create.mockResolvedValue(measurement);
 
@@ -49,7 +55,14 @@ describe('MeasurementsController', () => {
   });
 
   it('findOne deve delegar ao MeasurementsService', async () => {
-    const measurement = { id: 'meas-id-1', sensorId: 'sensor-id-1', temperature: 25, umidade: 80, luminosidade: 100, timestamp: new Date('2026-01-01T00:00:00.000Z') };
+    const measurement = {
+      id: 'meas-id-1',
+      sensorId: 'sensor-id-1',
+      temperature: 25,
+      umidade: 80,
+      luminosidade: 100,
+      timestamp: new Date('2026-01-01T00:00:00.000Z'),
+    };
     mockMeasurementsService.findOne.mockResolvedValue(measurement);
 
     const result = await controller.findOne('meas-id-1');

@@ -16,9 +16,7 @@ describe('SensorsController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [SensorsController],
-      providers: [
-        { provide: SensorsService, useValue: mockSensorsService },
-      ],
+      providers: [{ provide: SensorsService, useValue: mockSensorsService }],
     }).compile();
 
     controller = module.get<SensorsController>(SensorsController);
@@ -36,7 +34,10 @@ describe('SensorsController', () => {
 
     const result = await controller.create('farm-id-1', dto as any);
 
-    expect(mockSensorsService.create).toHaveBeenCalledWith({ ...dto, farmId: 'farm-id-1' });
+    expect(mockSensorsService.create).toHaveBeenCalledWith({
+      ...dto,
+      farmId: 'farm-id-1',
+    });
     expect(result).toEqual(sensor);
   });
 
@@ -64,9 +65,13 @@ describe('SensorsController', () => {
     const sensor = { id: 'sensor-id-1', name: 'Atualizado' };
     mockSensorsService.update.mockResolvedValue(sensor);
 
-    const result = await controller.update('sensor-id-1', { name: 'Atualizado' } as any);
+    const result = await controller.update('sensor-id-1', {
+      name: 'Atualizado',
+    } as any);
 
-    expect(mockSensorsService.update).toHaveBeenCalledWith('sensor-id-1', { name: 'Atualizado' });
+    expect(mockSensorsService.update).toHaveBeenCalledWith('sensor-id-1', {
+      name: 'Atualizado',
+    });
     expect(result).toEqual(sensor);
   });
 

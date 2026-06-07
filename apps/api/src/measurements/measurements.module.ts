@@ -7,6 +7,6 @@ import { ThresholdsModule } from 'src/thresholds/thresholds.module';
 @Module({
   imports: [AlertsModule, ThresholdsModule],
   controllers: [MeasurementsController],
-  providers: [MeasurementsService]
+  providers: [MeasurementsService],
 })
-export class MeasurementsModule { }
+export class MeasurementsModule {}

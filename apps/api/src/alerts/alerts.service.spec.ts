@@ -40,7 +40,12 @@ describe('AlertsService', () => {
         severity: AlertSeverity.CRITICO,
         measurement: { connect: { id: 'meas-id-1' } },
       };
-      const created = { id: 'alert-id-1', type: data.type, severity: data.severity, measurementId: 'meas-id-1' };
+      const created = {
+        id: 'alert-id-1',
+        type: data.type,
+        severity: data.severity,
+        measurementId: 'meas-id-1',
+      };
       mockPrismaService.alert.create.mockResolvedValue(created);
 
       const result = await service.create(data);
@@ -60,12 +65,16 @@ describe('AlertsService', () => {
 
       const result = await service.findAll();
 
-      expect(mockPrismaService.alert.findMany).toHaveBeenCalledWith({ where: {} });
+      expect(mockPrismaService.alert.findMany).toHaveBeenCalledWith({
+        where: {},
+      });
       expect(result).toEqual(alerts);
     });
 
     it('deve filtrar alertas por severity', async () => {
-      const alerts = [{ id: 'alert-id-1', type: 'threshold_exceeded', severity: 'CRITICO' }];
+      const alerts = [
+        { id: 'alert-id-1', type: 'threshold_exceeded', severity: 'CRITICO' },
+      ];
       mockPrismaService.alert.findMany.mockResolvedValue(alerts);
 
       const result = await service.findAll('CRITICO');
@@ -77,7 +86,9 @@ describe('AlertsService', () => {
     });
 
     it('deve filtrar alertas por type', async () => {
-      const alerts = [{ id: 'alert-id-1', type: 'threshold_exceeded', severity: 'NORMAL' }];
+      const alerts = [
+        { id: 'alert-id-1', type: 'threshold_exceeded', severity: 'NORMAL' },
+      ];
       mockPrismaService.alert.findMany.mockResolvedValue(alerts);
 
       const result = await service.findAll(undefined, 'threshold_exceeded');
@@ -91,19 +102,27 @@ describe('AlertsService', () => {
 
   describe('findOne', () => {
     it('deve retornar um alerta quando encontrado', async () => {
-      const alert = { id: 'alert-id-1', type: 'threshold_exceeded', severity: 'CRITICO' };
+      const alert = {
+        id: 'alert-id-1',
+        type: 'threshold_exceeded',
+        severity: 'CRITICO',
+      };
       mockPrismaService.alert.findUnique.mockResolvedValue(alert);
 
       const result = await service.findOne('alert-id-1');
 
-      expect(mockPrismaService.alert.findUnique).toHaveBeenCalledWith({ where: { id: 'alert-id-1' } });
+      expect(mockPrismaService.alert.findUnique).toHaveBeenCalledWith({
+        where: { id: 'alert-id-1' },
+      });
       expect(result).toEqual(alert);
     });
 
     it('deve lançar NotFoundException quando o alerta não for encontrado', async () => {
       mockPrismaService.alert.findUnique.mockResolvedValue(null);
 
-      await expect(service.findOne('id-invalido')).rejects.toThrow(NotFoundException);
+      await expect(service.findOne('id-invalido')).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 });

@@ -35,7 +35,11 @@ describe('SensorsService', () => {
   describe('create', () => {
     it('deve criar e retornar um novo sensor com sucesso', async () => {
       const data = { type: 'TEMPERATURA', farmId: 'farm-id-1' };
-      const created = { id: 'sensor-id-1', ...data, createdAt: new Date('2026-01-01T00:00:00.000Z') };
+      const created = {
+        id: 'sensor-id-1',
+        ...data,
+        createdAt: new Date('2026-01-01T00:00:00.000Z'),
+      };
       mockPrismaService.sensor.create.mockResolvedValue(created);
 
       const result = await service.create(data);
@@ -55,32 +59,46 @@ describe('SensorsService', () => {
 
       const result = await service.findByFarm('farm-id-1');
 
-      expect(mockPrismaService.sensor.findMany).toHaveBeenCalledWith({ where: { farmId: 'farm-id-1' } });
+      expect(mockPrismaService.sensor.findMany).toHaveBeenCalledWith({
+        where: { farmId: 'farm-id-1' },
+      });
       expect(result).toEqual(sensors);
     });
   });
 
   describe('findOne', () => {
     it('deve retornar um sensor quando encontrado', async () => {
-      const sensor = { id: 'sensor-id-1', farmId: 'farm-id-1', type: 'TEMPERATURA' };
+      const sensor = {
+        id: 'sensor-id-1',
+        farmId: 'farm-id-1',
+        type: 'TEMPERATURA',
+      };
       mockPrismaService.sensor.findUnique.mockResolvedValue(sensor);
 
       const result = await service.findOne('sensor-id-1');
 
-      expect(mockPrismaService.sensor.findUnique).toHaveBeenCalledWith({ where: { id: 'sensor-id-1' } });
+      expect(mockPrismaService.sensor.findUnique).toHaveBeenCalledWith({
+        where: { id: 'sensor-id-1' },
+      });
       expect(result).toEqual(sensor);
     });
 
     it('deve lançar NotFoundException quando o sensor não for encontrado', async () => {
       mockPrismaService.sensor.findUnique.mockResolvedValue(null);
 
-      await expect(service.findOne('id-invalido')).rejects.toThrow(NotFoundException);
+      await expect(service.findOne('id-invalido')).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 
   describe('update', () => {
     it('deve atualizar e retornar o sensor quando encontrado', async () => {
-      const sensor = { id: 'sensor-id-1', farmId: 'farm-id-1', type: 'TEMPERATURA' };
+      const sensor = {
+        id: 'sensor-id-1',
+        farmId: 'farm-id-1',
+        type: 'TEMPERATURA',
+      };
       const updated = { ...sensor, type: 'UMIDADE' };
       mockPrismaService.sensor.findUnique.mockResolvedValue(sensor);
       mockPrismaService.sensor.update.mockResolvedValue(updated);
@@ -97,27 +115,37 @@ describe('SensorsService', () => {
     it('deve lançar NotFoundException quando o sensor não existir', async () => {
       mockPrismaService.sensor.findUnique.mockResolvedValue(null);
 
-      await expect(service.update('id-invalido', { type: 'UMIDADE' })).rejects.toThrow(NotFoundException);
+      await expect(
+        service.update('id-invalido', { type: 'UMIDADE' }),
+      ).rejects.toThrow(NotFoundException);
       expect(mockPrismaService.sensor.update).not.toHaveBeenCalled();
     });
   });
 
   describe('remove', () => {
     it('deve remover o sensor quando encontrado', async () => {
-      const sensor = { id: 'sensor-id-1', farmId: 'farm-id-1', type: 'TEMPERATURA' };
+      const sensor = {
+        id: 'sensor-id-1',
+        farmId: 'farm-id-1',
+        type: 'TEMPERATURA',
+      };
       mockPrismaService.sensor.findUnique.mockResolvedValue(sensor);
       mockPrismaService.sensor.delete.mockResolvedValue(sensor);
 
       const result = await service.remove('sensor-id-1');
 
-      expect(mockPrismaService.sensor.delete).toHaveBeenCalledWith({ where: { id: 'sensor-id-1' } });
+      expect(mockPrismaService.sensor.delete).toHaveBeenCalledWith({
+        where: { id: 'sensor-id-1' },
+      });
       expect(result).toEqual(sensor);
     });
 
     it('deve lançar NotFoundException quando o sensor não existir', async () => {
       mockPrismaService.sensor.findUnique.mockResolvedValue(null);
 
-      await expect(service.remove('id-invalido')).rejects.toThrow(NotFoundException);
+      await expect(service.remove('id-invalido')).rejects.toThrow(
+        NotFoundException,
+      );
       expect(mockPrismaService.sensor.delete).not.toHaveBeenCalled();
     });
   });

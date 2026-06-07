@@ -39,8 +39,20 @@ describe('UsersService', () => {
     it('deve retornar a lista de usuários sem filtro', async () => {
       // Arrange
       const users = [
-        { id: '1', name: 'Alice', email: 'alice@email.com', roles: ['USER'], createdAt: new Date() },
-        { id: '2', name: 'Bob', email: 'bob@email.com', roles: ['ADMIN'], createdAt: new Date() },
+        {
+          id: '1',
+          name: 'Alice',
+          email: 'alice@email.com',
+          roles: ['USER'],
+          createdAt: new Date(),
+        },
+        {
+          id: '2',
+          name: 'Bob',
+          email: 'bob@email.com',
+          roles: ['ADMIN'],
+          createdAt: new Date(),
+        },
       ];
       mockPrismaService.user.findMany.mockResolvedValue(users);
 
@@ -56,7 +68,15 @@ describe('UsersService', () => {
 
     it('deve aplicar filtro por email quando fornecido', async () => {
       // Arrange
-      const users = [{ id: '1', name: 'Alice', email: 'alice@email.com', roles: ['USER'], createdAt: new Date() }];
+      const users = [
+        {
+          id: '1',
+          name: 'Alice',
+          email: 'alice@email.com',
+          roles: ['USER'],
+          createdAt: new Date(),
+        },
+      ];
       mockPrismaService.user.findMany.mockResolvedValue(users);
 
       // Act
@@ -93,7 +113,13 @@ describe('UsersService', () => {
   describe('findOne', () => {
     it('deve retornar um usuário quando encontrado', async () => {
       // Arrange
-      const user = { id: 'user-id-1', name: 'Alice', email: 'alice@email.com', roles: ['USER'], createdAt: new Date() };
+      const user = {
+        id: 'user-id-1',
+        name: 'Alice',
+        email: 'alice@email.com',
+        roles: ['USER'],
+        createdAt: new Date(),
+      };
       mockPrismaService.user.findUnique.mockResolvedValue(user);
 
       // Act
@@ -111,7 +137,9 @@ describe('UsersService', () => {
       mockPrismaService.user.findUnique.mockResolvedValue(null);
 
       // Act & Assert
-      await expect(service.findOne('id-invalido')).rejects.toThrow(NotFoundException);
+      await expect(service.findOne('id-invalido')).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 
@@ -121,19 +149,34 @@ describe('UsersService', () => {
   describe('update', () => {
     it('deve atualizar e retornar o usuário quando encontrado', async () => {
       // Arrange
-      const existingUser = { id: 'user-id-1', name: 'Alice', email: 'alice@email.com', roles: ['USER'], createdAt: new Date() };
+      const existingUser = {
+        id: 'user-id-1',
+        name: 'Alice',
+        email: 'alice@email.com',
+        roles: ['USER'],
+        createdAt: new Date(),
+      };
       const updatedUser = { ...existingUser, name: 'Alice Atualizada' };
 
       mockPrismaService.user.findUnique.mockResolvedValue(existingUser);
       mockPrismaService.user.update.mockResolvedValue(updatedUser);
 
       // Act
-      const result = await service.update('user-id-1', { name: 'Alice Atualizada' });
+      const result = await service.update('user-id-1', {
+        name: 'Alice Atualizada',
+      });
 
       // Assert
       expect(mockPrismaService.user.update).toHaveBeenCalledWith({
         where: { id: 'user-id-1' },
         data: { name: 'Alice Atualizada' },
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          roles: true,
+          createdAt: true,
+        },
       });
       expect(result).toEqual(updatedUser);
     });
@@ -143,7 +186,9 @@ describe('UsersService', () => {
       mockPrismaService.user.findUnique.mockResolvedValue(null);
 
       // Act & Assert
-      await expect(service.update('id-invalido', { name: 'Novo' })).rejects.toThrow(NotFoundException);
+      await expect(
+        service.update('id-invalido', { name: 'Novo' }),
+      ).rejects.toThrow(NotFoundException);
       expect(mockPrismaService.user.update).not.toHaveBeenCalled();
     });
   });
@@ -154,7 +199,13 @@ describe('UsersService', () => {
   describe('remove', () => {
     it('deve remover o usuário quando encontrado', async () => {
       // Arrange
-      const user = { id: 'user-id-1', name: 'Alice', email: 'alice@email.com', roles: ['USER'], createdAt: new Date() };
+      const user = {
+        id: 'user-id-1',
+        name: 'Alice',
+        email: 'alice@email.com',
+        roles: ['USER'],
+        createdAt: new Date(),
+      };
       mockPrismaService.user.findUnique.mockResolvedValue(user);
       mockPrismaService.user.delete.mockResolvedValue(user);
 
@@ -162,7 +213,16 @@ describe('UsersService', () => {
       const result = await service.remove('user-id-1');
 
       // Assert
-      expect(mockPrismaService.user.delete).toHaveBeenCalledWith({ where: { id: 'user-id-1' } });
+      expect(mockPrismaService.user.delete).toHaveBeenCalledWith({
+        where: { id: 'user-id-1' },
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          roles: true,
+          createdAt: true,
+        },
+      });
       expect(result).toEqual(user);
     });
 
@@ -171,7 +231,9 @@ describe('UsersService', () => {
       mockPrismaService.user.findUnique.mockResolvedValue(null);
 
       // Act & Assert
-      await expect(service.remove('id-invalido')).rejects.toThrow(NotFoundException);
+      await expect(service.remove('id-invalido')).rejects.toThrow(
+        NotFoundException,
+      );
       expect(mockPrismaService.user.delete).not.toHaveBeenCalled();
     });
   });

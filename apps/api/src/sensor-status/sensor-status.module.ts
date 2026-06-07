@@ -6,4 +6,4 @@ import { AlertsModule } from 'src/alerts/alerts.module';
   imports: [AlertsModule],
   providers: [SensorStatusService],
 })
-export class SensorStatusModule { }
+export class SensorStatusModule {}

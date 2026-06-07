@@ -13,10 +13,15 @@ import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { SensorStatusModule } from './sensor-status/sensor-status.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
     ScheduleModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env',
+    }),
     SensorStatusModule,
     DatabaseModule,
     UsersModule,
@@ -27,7 +32,8 @@ import { SensorStatusModule } from './sensor-status/sensor-status.module';
     ThresholdsModule,
     PrismaModule,
     AuthModule,
-    SensorStatusModule],
+    SensorStatusModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
