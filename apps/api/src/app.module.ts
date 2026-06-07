@@ -11,9 +11,23 @@ import { ThresholdsModule } from './thresholds/thresholds.module';
 import { LoggerMiddleware } from './logger/logger.middleware';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { SensorStatusModule } from './sensor-status/sensor-status.module';
 
 @Module({
-  imports: [DatabaseModule, UsersModule, FarmsModule, SensorsModule, MeasurementsModule, AlertsModule, ThresholdsModule, PrismaModule, AuthModule],
+  imports: [
+    ScheduleModule.forRoot(),
+    SensorStatusModule,
+    DatabaseModule,
+    UsersModule,
+    FarmsModule,
+    SensorsModule,
+    MeasurementsModule,
+    AlertsModule,
+    ThresholdsModule,
+    PrismaModule,
+    AuthModule,
+    SensorStatusModule],
   controllers: [AppController],
   providers: [AppService],
 })
