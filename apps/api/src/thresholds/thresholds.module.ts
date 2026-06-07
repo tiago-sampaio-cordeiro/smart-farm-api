@@ -4,6 +4,7 @@ import { ThresholdsService } from './thresholds.service';
 
 @Module({
   controllers: [ThresholdsController],
-  providers: [ThresholdsService]
+  providers: [ThresholdsService],
+  exports: [ThresholdsService]
 })
-export class ThresholdsModule {}
+export class ThresholdsModule { }
