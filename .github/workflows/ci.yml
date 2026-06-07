@@ -21,8 +21,8 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
-      - name: Debug - encontrar eslint
-        run: find . -name "eslint" -type f 2>/dev/null | head -20
+      - name: Debug - listar devDependencies
+        run: cat apps/api/package.json | grep eslint
 
       - name: Lint
         run: node_modules/.bin/eslint "apps/api/src/**/*.ts" "apps/api/test/**/*.ts"
