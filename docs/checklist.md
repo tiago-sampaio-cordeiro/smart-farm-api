@@ -27,8 +27,8 @@
 
 ## 🧪 RA3 - Qualidade de Software e TDD Guiado por IA
 
-- [ ] **ID10:** Orquestrou a IA no fluxo **TDD**, gerando testes automatizados (Jest) baseados nas Issues antes da implementação da lógica.
-- [ ] **ID11:** Os **testes** locais ou no pipeline executam com sucesso, cobrindo caminhos de sucesso e erro.
+- [x] **ID10:** Orquestrou a IA no fluxo **TDD**, gerando testes automatizados (Jest) baseados nas Issues antes da implementação da lógica.
+- [x] **ID11:** Os **testes** locais ou no pipeline executam com sucesso, cobrindo caminhos de sucesso e erro.
 
 ---
 
