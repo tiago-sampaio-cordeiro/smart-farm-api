@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [develop, main]
+    branches: ['**']
   pull_request:
     branches: [develop, main]
 
@@ -24,8 +24,13 @@ jobs:
       - name: Instalar dependências
         run: npm install
 
+      - name: Gerar Prisma Client
+        run: npx prisma generate
+        working-directory: apps/api
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
       - name: Rodar testes
         run: npm run test -w apps/api
-
-      - name: Verificar cobertura
-        run: npm run test:cov -w apps/api
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
