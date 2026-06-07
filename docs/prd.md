@@ -97,7 +97,7 @@ A smart farm é uma solução desenvolvida com o propósito de acompanhar e anal
 **Critérios de Aceitação:**
 
 - [ ] Filtrar medições por sensor
-- [ ]Ordenar por data
+- [ ] Ordenar por data
 
 ### US06 - Alertas organizados por tipo (Could Have)
 
