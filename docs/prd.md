@@ -67,9 +67,9 @@ A smart farm é uma solução desenvolvida com o propósito de acompanhar e anal
 
 **Critérios de Aceitação:**
 
-- [ ] Listar medições
-- [ ] Filtrar por lavoura
-- [ ] Filtrar por período (data inicial/final)
+- [x] Listar medições
+- [x] Filtrar por lavoura
+- [x] Filtrar por período (data inicial/final)
 
 ### US03 - Alerta de sensores inativos ou com defeito (Must Have)
 
@@ -77,8 +77,8 @@ A smart farm é uma solução desenvolvida com o propósito de acompanhar e anal
 
 **Critérios de Aceitação:**
 
-- [ ] Sensor é considerado inativo se não enviar dados por um período configurável
-- [ ] Sistema deve registrar status do sensor (ativo/inativo)
+- [x] Sensor é considerado inativo se não enviar dados por um período configurável
+- [x] Sistema deve registrar status do sensor (ativo/inativo)
 
 ### US04 - Geração de alertas (Must Have)
 
@@ -86,9 +86,9 @@ A smart farm é uma solução desenvolvida com o propósito de acompanhar e anal
 
 **Critérios de Aceitação:**
 
-- [ ] Comparar medições com parâmetros configurados
-- [ ] Gerar alerta quando limite for ultrapassado
-- [ ] Associar alerta à medição
+- [x] Comparar medições com parâmetros configurados
+- [x] Gerar alerta quando limite for ultrapassado
+- [x] Associar alerta à medição
 
 ### US05 - Analise de un sensor específico (Should Have)
 
@@ -96,8 +96,8 @@ A smart farm é uma solução desenvolvida com o propósito de acompanhar e anal
 
 **Critérios de Aceitação:**
 
-- [ ] Filtrar medições por sensor
-- [ ] Ordenar por data
+- [x] Filtrar medições por sensor
+- [x] Ordenar por data
 
 ### US06 - Alertas organizados por tipo (Could Have)
 
@@ -105,9 +105,9 @@ A smart farm é uma solução desenvolvida com o propósito de acompanhar e anal
 
 **Critérios de Aceitação:**
 
-- [ ] Alerta NORMAL, casos onde não necessita providencia imediata
-- [ ] Alerta MODERADO, casos onde a providencia nao precisa ser imediata mas a longo prazo pode piorar
-- [ ] Alerta CRITICO, casos onde necessita uma atitude rapida
+- [x] Alerta NORMAL, casos onde não necessita providencia imediata
+- [x] Alerta MODERADO, casos onde a providencia nao precisa ser imediata mas a longo prazo pode piorar
+- [x] Alerta CRITICO, casos onde necessita uma atitude rapida
 
 ### US07 - Funcionalidades Fora de Escopo (Won't Have)
 
