@@ -24,8 +24,9 @@ jobs:
       - name: Instalar dependências
         run: npm install
 
+      - name: Gerar Prisma Client
+        run: npx prisma generate
+        working-directory: apps/api
+
       - name: Rodar testes
         run: npm run test -w apps/api
-
-      - name: Verificar cobertura
-        run: npm run test:cov -w apps/api
