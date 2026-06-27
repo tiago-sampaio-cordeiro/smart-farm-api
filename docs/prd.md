@@ -13,6 +13,7 @@ A smart farm é uma solução desenvolvida com o propósito de acompanhar e anal
 ## 2. Glossário Ubíquo
 
 - **Usuário (Produtor Rural):** Responsável por gerenciar uma ou mais lavouras.
+- **Administrador:** Responsável por gerenciar usuários do sistema
 - **Lavoura:** Área agrícola monitorada, associada a um usuário e contendo sensores IoT.
 - **Sensor:** Dispositivo responsável por coletar dados ambientais (temperatura, umidade, luminosidade).
 - **Medição:** Registro de dados coletados por um sensor em um determinado momento.
@@ -125,6 +126,19 @@ A smart farm é uma solução desenvolvida com o propósito de acompanhar e anal
 - [x] Atualizar dados de um usuário
 - [x] Remover um usuário
 - [x] Somente ADMIN pode acessar essas operações
+
+### US09 - Telas do sistema (Must Have)
+**Ator:** User | **História:** Como usuário, quero ver as telas do sistema para ter uma visão geral da aplicação.
+
+**Critérios de Aceitação:**
+- [ ] Tela de Login
+- [ ] Tela de Cadastro
+- [ ] Tela de Autenticação
+- [ ] Tela de Dashboard
+- [ ] Tela de Sensores
+- [ ] Tela de Medições
+- [ ] Tela de Alertas
+- [ ] Tela de Usuários
 
 ## 🛡️ 5. Regras de Negócio (Constraints)
 
