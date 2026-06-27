@@ -59,10 +59,16 @@ export class MeasurementsService {
     return measurement;
   }
 
-  async findAll(sensorId?: string, from?: string, to?: string) {
+  async findAll(
+    sensorId?: string,
+    farmId?: string,
+    from?: string,
+    to?: string,
+  ) {
     return await this.prisma.measurement.findMany({
       where: {
         ...(sensorId && { sensorId }),
+        ...(farmId && { sensor: { farmId } }),
         ...((from || to) && {
           timestamp: {
             ...(from && { gte: new Date(from) }),

@@ -50,7 +50,50 @@ describe('MeasurementsController', () => {
 
     const result = await controller.findAll('sensor-id-1');
 
-    expect(mockMeasurementsService.findAll).toHaveBeenCalledWith('sensor-id-1');
+    expect(mockMeasurementsService.findAll).toHaveBeenCalledWith(
+      'sensor-id-1',
+      undefined,
+      undefined,
+      undefined,
+    );
+    expect(result).toEqual(measurements);
+  });
+
+  it('findAll deve delegar ao MeasurementsService com filtro de farmId', async () => {
+    const measurements = [{ id: 'meas-id-1', sensorId: 'sensor-id-1' }];
+    mockMeasurementsService.findAll.mockResolvedValue(measurements);
+
+    const result = await controller.findAll(
+      undefined,
+      'farm-id-1',
+    );
+
+    expect(mockMeasurementsService.findAll).toHaveBeenCalledWith(
+      undefined,
+      'farm-id-1',
+      undefined,
+      undefined,
+    );
+    expect(result).toEqual(measurements);
+  });
+
+  it('findAll deve delegar ao MeasurementsService com filtro de período', async () => {
+    const measurements = [{ id: 'meas-id-1' }];
+    mockMeasurementsService.findAll.mockResolvedValue(measurements);
+
+    const result = await controller.findAll(
+      undefined,
+      undefined,
+      '2026-01-01T00:00:00Z',
+      '2026-12-31T23:59:59Z',
+    );
+
+    expect(mockMeasurementsService.findAll).toHaveBeenCalledWith(
+      undefined,
+      undefined,
+      '2026-01-01T00:00:00Z',
+      '2026-12-31T23:59:59Z',
+    );
     expect(result).toEqual(measurements);
   });
 
