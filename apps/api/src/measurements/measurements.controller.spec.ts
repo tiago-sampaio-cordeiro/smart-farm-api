@@ -63,10 +63,7 @@ describe('MeasurementsController', () => {
     const measurements = [{ id: 'meas-id-1', sensorId: 'sensor-id-1' }];
     mockMeasurementsService.findAll.mockResolvedValue(measurements);
 
-    const result = await controller.findAll(
-      undefined,
-      'farm-id-1',
-    );
+    const result = await controller.findAll(undefined, 'farm-id-1');
 
     expect(mockMeasurementsService.findAll).toHaveBeenCalledWith(
       undefined,
