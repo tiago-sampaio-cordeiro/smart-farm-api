@@ -5,6 +5,7 @@ import {
   Get,
   HttpCode,
   Param,
+  Patch,
   Post,
   Put,
   UseFilters,
@@ -29,7 +30,7 @@ import { RolesGuard } from 'src/auth/roles.guard';
 @Controller('thresholds')
 @UseFilters(DuplicateThresholdFilter)
 export class ThresholdsController {
-  constructor(private readonly thresholdsService: ThresholdsService) {}
+  constructor(private readonly thresholdsService: ThresholdsService) { }
 
   @ApiOperation({ summary: 'Criar um novo conjunto de parâmetros' })
   @ApiBody({ type: CreateTheresholdDto })
@@ -40,7 +41,7 @@ export class ThresholdsController {
   @Roles('USER')
   @Post()
   @HttpCode(201)
-  async create(@Body() body: CreateTheresholdDto) {
+  create(@Body() body: CreateTheresholdDto) {
     return this.thresholdsService.create(body);
   }
 
@@ -55,7 +56,7 @@ export class ThresholdsController {
   @Roles('USER')
   @Get('farm/:farmId')
   @HttpCode(200)
-  async findByFarm(@Param('farmId') farmId: string) {
+  findByFarm(@Param('farmId') farmId: string) {
     return this.thresholdsService.findByFarm(farmId);
   }
 
@@ -70,7 +71,7 @@ export class ThresholdsController {
   @Roles('USER')
   @Get(':id')
   @HttpCode(200)
-  async findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: string) {
     return this.thresholdsService.findOne(id);
   }
 
@@ -87,7 +88,27 @@ export class ThresholdsController {
   @Roles('USER')
   @Put(':id')
   @HttpCode(200)
-  async update(
+  update(
+    @Param('id') id: string,
+    @Body() body: Prisma.ThresholdUpdateInput,
+  ) {
+    return this.thresholdsService.update(id, body);
+  }
+
+  @ApiOperation({ summary: 'Atualizar um parâmetro pelo Id' })
+  @ApiBody({ type: CreateTheresholdDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Parâmetros atualizados com sucesso',
+  })
+  @ApiResponse({ status: 400, description: 'Dados inválidos' })
+  @ApiResponse({ status: 404, description: 'Parâmetros não encontrados' })
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('USER')
+  @Patch(':id')
+  @HttpCode(200)
+  updatePartial(
     @Param('id') id: string,
     @Body() body: Prisma.ThresholdUpdateInput,
   ) {
