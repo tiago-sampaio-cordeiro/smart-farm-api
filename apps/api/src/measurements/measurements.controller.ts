@@ -47,12 +47,28 @@ export class MeasurementsController {
   }
 
   @ApiOperation({
-    summary: 'Listar todas as medições, com filtro opcional por sensorId',
+    summary:
+      'Listar medições com filtro opcional por sensor, lavoura e período',
   })
   @ApiQuery({
     name: 'sensorId',
     required: false,
-    description: 'Ids dos sensores para filtrar as medições',
+    description: 'ID do sensor para filtrar as medições',
+  })
+  @ApiQuery({
+    name: 'farmId',
+    required: false,
+    description: 'ID da lavoura para filtrar as medições',
+  })
+  @ApiQuery({
+    name: 'from',
+    required: false,
+    description: 'Data inicial do período (ISO 8601), ex: 2026-01-01T00:00:00Z',
+  })
+  @ApiQuery({
+    name: 'to',
+    required: false,
+    description: 'Data final do período (ISO 8601), ex: 2026-12-31T23:59:59Z',
   })
   @ApiResponse({
     status: 200,
@@ -63,8 +79,13 @@ export class MeasurementsController {
   @HttpCode(HttpStatus.OK)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('USER')
-  findAll(@Query('sensorId') sensorId?: string) {
-    return this.measurementsService.findAll(sensorId);
+  findAll(
+    @Query('sensorId') sensorId?: string,
+    @Query('farmId') farmId?: string,
+    @Query('from') from?: string,
+    @Query('to') to?: string,
+  ) {
+    return this.measurementsService.findAll(sensorId, farmId, from, to);
   }
 
   @ApiOperation({ summary: 'Buscar uma medição pelo Id do sensor' })

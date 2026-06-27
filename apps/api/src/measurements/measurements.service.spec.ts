@@ -236,6 +236,44 @@ describe('MeasurementsService', () => {
       );
       expect(result).toEqual(measurements);
     });
+
+    it('deve filtrar medições por farmId via relação aninhada', async () => {
+      const measurements = [{ id: 'meas-id-1', sensorId: 'sensor-id-1' }];
+      mockPrismaService.measurement.findMany.mockResolvedValue(measurements);
+
+      const result = await service.findAll(undefined, 'farm-id-1');
+
+      expect(mockPrismaService.measurement.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: expect.objectContaining({
+            sensor: { farmId: 'farm-id-1' },
+          }),
+        }),
+      );
+      expect(result).toEqual(measurements);
+    });
+
+    it('deve filtrar medições por período (from e to)', async () => {
+      const measurements = [{ id: 'meas-id-1' }];
+      mockPrismaService.measurement.findMany.mockResolvedValue(measurements);
+
+      const from = '2026-01-01T00:00:00Z';
+      const to = '2026-12-31T23:59:59Z';
+
+      const result = await service.findAll(undefined, undefined, from, to);
+
+      expect(mockPrismaService.measurement.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: expect.objectContaining({
+            timestamp: {
+              gte: new Date(from),
+              lte: new Date(to),
+            },
+          }),
+        }),
+      );
+      expect(result).toEqual(measurements);
+    });
   });
 
   describe('findOne', () => {
