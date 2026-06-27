@@ -30,7 +30,7 @@ import { RolesGuard } from 'src/auth/roles.guard';
 @Controller('thresholds')
 @UseFilters(DuplicateThresholdFilter)
 export class ThresholdsController {
-  constructor(private readonly thresholdsService: ThresholdsService) { }
+  constructor(private readonly thresholdsService: ThresholdsService) {}
 
   @ApiOperation({ summary: 'Criar um novo conjunto de parâmetros' })
   @ApiBody({ type: CreateTheresholdDto })
@@ -88,10 +88,7 @@ export class ThresholdsController {
   @Roles('USER')
   @Put(':id')
   @HttpCode(200)
-  update(
-    @Param('id') id: string,
-    @Body() body: Prisma.ThresholdUpdateInput,
-  ) {
+  update(@Param('id') id: string, @Body() body: Prisma.ThresholdUpdateInput) {
     return this.thresholdsService.update(id, body);
   }
 
