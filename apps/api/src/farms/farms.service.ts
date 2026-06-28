@@ -6,14 +6,18 @@ import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class FarmsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
-  async create(data: CreateFarmDto) {
+  async create(data: CreateFarmDto & { userId: string }) {
     return await this.prisma.farm.create({ data });
   }
 
   async findAll() {
     return this.prisma.farm.findMany();
+  }
+
+  async findAllByUser(userId: string) {
+    return this.prisma.farm.findMany({ where: { userId } });
   }
 
   async findOne(id: string) {

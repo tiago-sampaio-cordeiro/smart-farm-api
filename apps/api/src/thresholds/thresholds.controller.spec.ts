@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ThresholdsController } from './thresholds.controller';
 import { ThresholdsService } from './thresholds.service';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 const mockThresholdsService = {
   create: jest.fn(),
@@ -8,6 +9,11 @@ const mockThresholdsService = {
   findOne: jest.fn(),
   update: jest.fn(),
   remove: jest.fn(),
+};
+
+const mockPrismaService = {
+  farm: { findUnique: jest.fn() },
+  threshold: { findUnique: jest.fn() },
 };
 
 describe('ThresholdsController', () => {
@@ -18,6 +24,7 @@ describe('ThresholdsController', () => {
       controllers: [ThresholdsController],
       providers: [
         { provide: ThresholdsService, useValue: mockThresholdsService },
+        { provide: PrismaService, useValue: mockPrismaService },
       ],
     }).compile();
 
@@ -33,9 +40,7 @@ describe('ThresholdsController', () => {
     const dto = { farmId: 'farm-id-1', type: 'TEMPERATURA', min: 10, max: 40 };
     const threshold = { id: 'threshold-id-1', ...dto };
     mockThresholdsService.create.mockResolvedValue(threshold);
-
     const result = await controller.create(dto as any);
-
     expect(mockThresholdsService.create).toHaveBeenCalledWith(dto);
     expect(result).toEqual(threshold);
   });
@@ -43,9 +48,7 @@ describe('ThresholdsController', () => {
   it('findByFarm deve delegar ao ThresholdsService', async () => {
     const thresholds = [{ id: 'threshold-id-1', farmId: 'farm-id-1' }];
     mockThresholdsService.findByFarm.mockResolvedValue(thresholds);
-
     const result = await controller.findByFarm('farm-id-1');
-
     expect(mockThresholdsService.findByFarm).toHaveBeenCalledWith('farm-id-1');
     expect(result).toEqual(thresholds);
   });
@@ -57,23 +60,17 @@ describe('ThresholdsController', () => {
       type: 'TEMPERATURA',
     };
     mockThresholdsService.findOne.mockResolvedValue(threshold);
-
     const result = await controller.findOne('threshold-id-1');
-
-    expect(mockThresholdsService.findOne).toHaveBeenCalledWith(
-      'threshold-id-1',
-    );
+    expect(mockThresholdsService.findOne).toHaveBeenCalledWith('threshold-id-1');
     expect(result).toEqual(threshold);
   });
 
   it('update deve delegar ao ThresholdsService', async () => {
     const threshold = { id: 'threshold-id-1', max: 50 };
     mockThresholdsService.update.mockResolvedValue(threshold);
-
     const result = await controller.update('threshold-id-1', {
       max: 50,
     } as any);
-
     expect(mockThresholdsService.update).toHaveBeenCalledWith(
       'threshold-id-1',
       { max: 50 },
@@ -83,9 +80,7 @@ describe('ThresholdsController', () => {
 
   it('remove deve delegar ao ThresholdsService', async () => {
     mockThresholdsService.remove.mockResolvedValue(undefined);
-
     await controller.remove('threshold-id-1');
-
     expect(mockThresholdsService.remove).toHaveBeenCalledWith('threshold-id-1');
   });
 });
