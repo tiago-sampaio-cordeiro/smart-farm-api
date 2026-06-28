@@ -43,7 +43,7 @@ export class AlertsController {
   @Roles('USER')
   @Get()
   @HttpCode(200)
-  async findAll(@Query() query: QueryAlertDto) {
+  findAll(@Query() query: QueryAlertDto) {
     return this.alertsService.findAll(query.severity, query.type);
   }
 
@@ -51,9 +51,11 @@ export class AlertsController {
   @ApiResponse({ status: 200, description: 'Alerta encontrado com sucesso' })
   @ApiResponse({ status: 404, description: 'Alerta não encontrado' })
   @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('USER')
   @Get(':id')
   @HttpCode(200)
-  async findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: string) {
     return this.alertsService.findOne(id);
   }
 }
