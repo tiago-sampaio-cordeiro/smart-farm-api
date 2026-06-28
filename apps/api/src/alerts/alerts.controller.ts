@@ -16,7 +16,7 @@ import { UseGuards } from '@nestjs/common';
 @ApiTags('alerts')
 @Controller('alerts')
 export class AlertsController {
-  constructor(private readonly alertsService: AlertsService) { }
+  constructor(private readonly alertsService: AlertsService) {}
 
   // metodo create só serve para testes
 
@@ -43,7 +43,7 @@ export class AlertsController {
   @Roles('USER')
   @Get()
   @HttpCode(200)
-  async findAll(@Query() query: QueryAlertDto) {
+  findAll(@Query() query: QueryAlertDto) {
     return this.alertsService.findAll(query.severity, query.type);
   }
 
@@ -55,7 +55,7 @@ export class AlertsController {
   @Roles('USER')
   @Get(':id')
   @HttpCode(200)
-  async findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: string) {
     return this.alertsService.findOne(id);
   }
 }
