@@ -30,23 +30,27 @@ export default function Register() {
     }
 
     return (
-        <div
-            className="min-h-screen flex items-center justify-center p-4"
-            style={{ backgroundColor: '#f5fbf5', fontFamily: 'Manrope, sans-serif' }}
-        >
-            <main className="w-full max-w-[400px] flex flex-col gap-8">
+        <div className="min-h-screen flex items-start sm:items-center justify-center p-4 bg-[#f5fbf5]">
+            <main className="w-full max-w-sm flex flex-col gap-6 sm:gap-8">
+
                 {/* Brand */}
                 <div className="flex flex-col items-center text-center gap-4">
-                    <div className="w-16 h-16 rounded-xl flex items-center justify-center shadow-sm" style={{ backgroundColor: '#008560' }}>
-                        <span className="text-white text-4xl">🌱</span>
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl flex items-center justify-center shadow-sm bg-[#008560]">
+                        <span className="text-white text-3xl sm:text-4xl">🌱</span>
                     </div>
-                    <h1 className="text-2xl font-black tracking-tight" style={{ color: '#171d1a' }}>Smart Farm</h1>
-                    <p className="text-sm" style={{ color: '#3d4943' }}>Crie sua conta para começar</p>
+
+                    <h1 className="text-xl sm:text-2xl font-black tracking-tight text-[#171d1a]">
+                        Smart Farm
+                    </h1>
+
+                    <p className="text-xs sm:text-sm text-[#3d4943]">
+                        Crie sua conta para começar
+                    </p>
                 </div>
 
                 {/* Card */}
-                <div className="bg-white rounded-xl p-8 shadow-sm border" style={{ borderColor: 'rgba(188, 202, 193, 0.3)' }}>
-                    <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
+                <div className="bg-white rounded-xl p-5 sm:p-8 shadow-sm border border-[#bccac14d]">
+                    <form className="flex flex-col gap-5 sm:gap-6" onSubmit={handleSubmit}>
 
                         {error && (
                             <div className="p-3 rounded-lg text-sm text-red-700 bg-red-50 border border-red-200">
@@ -56,43 +60,49 @@ export default function Register() {
 
                         {/* Name */}
                         <div className="flex flex-col gap-1">
-                            <label className="text-xs font-medium tracking-wide uppercase" style={{ color: '#3d4943' }}>Nome</label>
+                            <label className="text-xs font-medium tracking-wide uppercase text-[#3d4943]">
+                                Nome
+                            </label>
+
                             <input
                                 type="text"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                                 placeholder="Seu nome"
                                 required
-                                className="w-full px-4 py-3 border rounded-lg text-sm outline-none transition-all"
-                                style={{ borderColor: '#bccac1', color: '#171d1a' }}
+                                className="w-full px-3 sm:px-4 py-3 rounded-lg border border-[#bccac1] text-[#171d1a] text-sm outline-none transition focus:border-[#008560] focus:ring-2 focus:ring-[#008560]/20"
                             />
                         </div>
 
                         {/* Email */}
                         <div className="flex flex-col gap-1">
-                            <label className="text-xs font-medium tracking-wide uppercase" style={{ color: '#3d4943' }}>E-mail</label>
+                            <label className="text-xs font-medium tracking-wide uppercase text-[#3d4943]">
+                                E-mail
+                            </label>
+
                             <input
                                 type="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder="nome@exemplo.com"
                                 required
-                                className="w-full px-4 py-3 border rounded-lg text-sm outline-none transition-all"
-                                style={{ borderColor: '#bccac1', color: '#171d1a' }}
+                                className="w-full px-3 sm:px-4 py-3 rounded-lg border border-[#bccac1] text-[#171d1a] text-sm outline-none transition focus:border-[#008560] focus:ring-2 focus:ring-[#008560]/20"
                             />
                         </div>
 
                         {/* Password */}
                         <div className="flex flex-col gap-1">
-                            <label className="text-xs font-medium tracking-wide uppercase" style={{ color: '#3d4943' }}>Senha</label>
+                            <label className="text-xs font-medium tracking-wide uppercase text-[#3d4943]">
+                                Senha
+                            </label>
+
                             <input
                                 type="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 placeholder="••••••••"
                                 required
-                                className="w-full px-4 py-3 border rounded-lg text-sm outline-none transition-all"
-                                style={{ borderColor: '#bccac1', color: '#171d1a' }}
+                                className="w-full px-3 sm:px-4 py-3 rounded-lg border border-[#bccac1] text-[#171d1a] text-sm outline-none transition focus:border-[#008560] focus:ring-2 focus:ring-[#008560]/20"
                             />
                         </div>
 
@@ -100,8 +110,7 @@ export default function Register() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full py-3 rounded-lg font-bold text-white transition-all"
-                            style={{ backgroundColor: '#008560' }}
+                            className="w-full py-3 rounded-lg bg-[#008560] text-white font-bold transition hover:bg-[#00694c] disabled:opacity-50"
                         >
                             {loading ? 'Cadastrando...' : 'Cadastrar'}
                         </button>
@@ -110,11 +119,14 @@ export default function Register() {
 
                 {/* Footer */}
                 <footer className="text-center">
-                    <p className="text-sm" style={{ color: '#3d4943' }}>
-                        Já tem conta?{' '}
-                        <a href="/login" className="font-bold" style={{ color: '#00694c' }}>Entrar</a>
+                    <p className="text-sm text-[#3d4943]">
+                        Já tem conta?{" "}
+                        <a href="/login" className="font-bold text-[#00694c] hover:underline">
+                            Entrar
+                        </a>
                     </p>
                 </footer>
+
             </main>
         </div>
     )

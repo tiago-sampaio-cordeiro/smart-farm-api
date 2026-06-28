@@ -29,26 +29,18 @@ export default function Login() {
     }
 
     return (
-        <div
-            className="min-h-screen flex items-center justify-center p-4"
-            style={{
-                backgroundColor: '#f5fbf5',
-                backgroundImage: 'linear-gradient(rgba(245, 251, 245, 0.94), rgba(245, 251, 245, 0.94))',
-                fontFamily: 'Manrope, sans-serif',
-            }}
-        >
-            <main className="w-full max-w-[400px] flex flex-col gap-8">
+        <div className="min-h-screen bg-[#f5fbf5] flex items-start sm:items-center justify-center p-4 sm:p-6">
+            <main className="w-full max-w-sm sm:max-w-md flex flex-col gap-6 sm:gap-8">
                 {/* Brand */}
                 <div className="flex flex-col items-center text-center gap-4">
-                    <div className="w-16 h-16 rounded-xl flex items-center justify-center shadow-sm" style={{ backgroundColor: '#008560' }}>
-                        <span className="text-white text-4xl">🌱</span>
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl flex items-center justify-center shadow-sm bg-[#008560]">                        <span className="text-white text-4xl">🌱</span>
                     </div>
-                    <h1 className="text-2xl font-black tracking-tight" style={{ color: '#171d1a' }}>Smart Farm</h1>
-                    <p className="text-sm" style={{ color: '#3d4943' }}>Monitoramento inteligente de lavouras</p>
+                    <h1 className="text-xl sm:text-2xl font-black">Smart Farm</h1>
+                    <p className="text-xs sm:text-sm text-[#3d4943]">Monitoramento inteligente de lavouras</p>
                 </div>
 
                 {/* Card */}
-                <div className="bg-white rounded-xl p-8 shadow-sm border" style={{ borderColor: 'rgba(188, 202, 193, 0.3)' }}>
+                <div className="bg-white rounded-xl p-5 sm:p-8">
                     <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
 
                         {error && (
@@ -59,23 +51,22 @@ export default function Login() {
 
                         {/* Email */}
                         <div className="flex flex-col gap-1">
-                            <label className="text-xs font-medium tracking-wide uppercase" style={{ color: '#3d4943' }}>E-mail</label>
+                            <label className="text-xs font-medium tracking-wide uppercase text-[#3d4943]"></label>
                             <input
                                 type="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder="nome@exemplo.com"
                                 required
-                                className="w-full px-4 py-3 border rounded-lg text-sm outline-none transition-all"
-                                style={{ borderColor: '#bccac1', color: '#171d1a' }}
+                                className="w-full px-4 py-3 rounded-lg border border-[#bccac1] text-[#171d1a] text-sm outline-none transition focus:border-[#008560] focus:ring-2 focus:ring-[#008560]/20"
                             />
                         </div>
 
                         {/* Password */}
                         <div className="flex flex-col gap-1">
                             <div className="flex justify-between items-center">
-                                <label className="text-xs font-medium tracking-wide uppercase" style={{ color: '#3d4943' }}>Senha</label>
-                                <a href="#" className="text-xs font-bold" style={{ color: '#00694c' }}>Esqueci minha senha</a>
+                                <label className="text-xs font-medium tracking-wide uppercase text-[#3d4943]"></label>
+                                <a href="#" className="text-[#00694c] font-bold hover:underline">Esqueci minha senha</a>
                             </div>
                             <input
                                 type="password"
@@ -83,8 +74,7 @@ export default function Login() {
                                 onChange={(e) => setPassword(e.target.value)}
                                 placeholder="••••••••"
                                 required
-                                className="w-full px-4 py-3 border rounded-lg text-sm outline-none transition-all"
-                                style={{ borderColor: '#bccac1', color: '#171d1a' }}
+                                className="w-full px-4 py-3 rounded-lg border border-[#bccac1] text-[#171d1a] text-sm outline-none transition focus:border-[#008560] focus:ring-2 focus:ring-[#008560]/20"
                             />
                         </div>
 
@@ -92,25 +82,23 @@ export default function Login() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full py-3 rounded-lg font-bold text-white transition-all"
-                            style={{ backgroundColor: '#008560' }}
+                            className="w-full py-3 rounded-lg bg-[#008560] text-white font-bold transition hover:bg-[#00694c] disabled:opacity-50"
                         >
                             {loading ? 'Entrando...' : 'Entrar'}
                         </button>
 
                         {/* Divider */}
                         <div className="flex items-center gap-4">
-                            <div className="h-px w-full" style={{ backgroundColor: '#bccac1' }}></div>
-                            <span className="text-xs" style={{ color: '#6d7a73' }}>ou</span>
-                            <div className="h-px w-full" style={{ backgroundColor: '#bccac1' }}></div>
+                            <div className="h-px w-full bg-[#bccac1]" />
+                            <span className="text-xs text-[#6d7a73]">ou</span>
+                            <div className="h-px w-full bg-[#bccac1]" />
                         </div>
 
                         {/* Google */}
                         <button
                             type="button"
                             onClick={() => window.location.href = 'http://localhost:3000/auth/google'}
-                            className="w-full flex items-center justify-center gap-3 border py-3 rounded-lg text-sm transition-colors"
-                            style={{ borderColor: '#bccac1', color: '#3d4943' }}
+                            className="w-full flex items-center justify-center gap-3 border border-[#bccac1] py-3 rounded-lg text-sm text-[#3d4943] transition-colors hover:bg-[#f5fbf5]"
                         >
                             <svg className="w-5 h-5" viewBox="0 0 24 24">
                                 <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
@@ -125,9 +113,11 @@ export default function Login() {
 
                 {/* Footer */}
                 <footer className="text-center">
-                    <p className="text-sm" style={{ color: '#3d4943' }}>
-                        Não tem conta?{' '}
-                        <a href="/register" className="font-bold" style={{ color: '#00694c' }}>Cadastre-se</a>
+                    <p className="text-sm text-[#3d4943]">
+                        Não tem conta?{" "}
+                        <a href="/register" className="font-bold text-[#00694c] hover:underline">
+                            Cadastre-se
+                        </a>
                     </p>
                 </footer>
             </main>
