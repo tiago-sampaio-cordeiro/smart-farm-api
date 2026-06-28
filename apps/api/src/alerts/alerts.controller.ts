@@ -16,7 +16,7 @@ import { UseGuards } from '@nestjs/common';
 @ApiTags('alerts')
 @Controller('alerts')
 export class AlertsController {
-  constructor(private readonly alertsService: AlertsService) {}
+  constructor(private readonly alertsService: AlertsService) { }
 
   // metodo create só serve para testes
 
@@ -51,6 +51,8 @@ export class AlertsController {
   @ApiResponse({ status: 200, description: 'Alerta encontrado com sucesso' })
   @ApiResponse({ status: 404, description: 'Alerta não encontrado' })
   @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('USER')
   @Get(':id')
   @HttpCode(200)
   async findOne(@Param('id') id: string) {
