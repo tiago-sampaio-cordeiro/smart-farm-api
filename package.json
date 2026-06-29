@@ -1,0 +1,33 @@
+{
+  "name": "smart-farm-monorepo",
+  "version": "1.0.0",
+  "description": "Monorepo do projeto da disciplina de Topicos especiais",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev:api": "npm run start:dev -w apps/api",
+    "web:dev": "npm run dev -w apps/web"
+  },
+  "keywords": [
+    "nestjs",
+    "reactjs",
+    "monorepo"
+  ],
+  "author": "Tiago Sampaio",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.15.1",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "autoprefixer": "^10.5.0",
+    "postcss": "^8.5.15",
+    "tailwindcss": "^3.4.19"
+  }
+}

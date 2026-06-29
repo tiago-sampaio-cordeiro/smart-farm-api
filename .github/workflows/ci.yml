@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+    branches: [develop, main]
+
+jobs:
+  test:
+    name: Testes Automatizados
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Instalar devDependencies da API
+        run: npm install --prefix apps/api
+
+      - name: Debug - verificar eslint
+        run: ls apps/api/node_modules/.bin/ | grep eslint
+
+      - name: Lint
+        run: apps/api/node_modules/.bin/eslint "apps/api/src/**/*.ts"
+
+      - name: Gerar Prisma Client
+        run: npx prisma generate
+        working-directory: apps/api
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+      - name: Rodar testes
+        run: npm run test -w apps/api
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
