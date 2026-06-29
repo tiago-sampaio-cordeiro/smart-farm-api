@@ -31,7 +31,7 @@ import { ThresholdOwnershipGuard } from './guards/threshold-ownership.guard';
 @Controller('thresholds')
 @UseFilters(DuplicateThresholdFilter)
 export class ThresholdsController {
-  constructor(private readonly thresholdsService: ThresholdsService) { }
+  constructor(private readonly thresholdsService: ThresholdsService) {}
 
   @ApiOperation({ summary: 'Criar um novo conjunto de parâmetros' })
   @ApiBody({ type: CreateTheresholdDto })

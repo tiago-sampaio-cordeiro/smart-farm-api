@@ -33,7 +33,7 @@ import { FarmOwnershipGuard } from './guards/farm-ownership.guard';
 @Controller('farms')
 @UseFilters(FarmNotFoundFilter)
 export class FarmsController {
-  constructor(private readonly farmsService: FarmsService) { }
+  constructor(private readonly farmsService: FarmsService) {}
 
   @ApiBody({ type: CreateFarmDto })
   @ApiOperation({ summary: 'Criar uma nova plantação' })

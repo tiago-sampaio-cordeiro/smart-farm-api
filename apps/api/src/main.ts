@@ -1,4 +1,4 @@
-import 'dotenv/config'
+import 'dotenv/config';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
@@ -7,8 +7,6 @@ import { HttpExceptionFilter } from './http-exception/http-exception.filter';
 import { TransformInterceptor } from './transform/transform.interceptor';
 import { ConfigService } from '@nestjs/config';
 // import { writeFileSync } from 'fs';
-
-
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -29,8 +27,6 @@ async function bootstrap() {
     }),
   );
 
-
-
   app.useGlobalInterceptors(new TransformInterceptor());
   app.useGlobalFilters(new HttpExceptionFilter());
 
@@ -43,7 +39,6 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-
 
   // writeFileSync('./swagger.json', JSON.stringify(document, null, 2));
 

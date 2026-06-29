@@ -12,12 +12,13 @@ export class SensorStatusService {
     private prisma: PrismaService,
     private alertsService: AlertsService,
     private configService: ConfigService,
-  ) { }
+  ) {}
 
   @Cron('*/1 * * * *') // executa a cada 1 minuto
   async checkInactiveSensors() {
     const inactivityMinutes = parseInt(
-      this.configService.get<string>('SENSOR_INACTIVITY_MINUTES') || '5');
+      this.configService.get<string>('SENSOR_INACTIVITY_MINUTES') || '5',
+    );
 
     const inactivityThreshold = new Date(
       Date.now() - inactivityMinutes * 60 * 1000,

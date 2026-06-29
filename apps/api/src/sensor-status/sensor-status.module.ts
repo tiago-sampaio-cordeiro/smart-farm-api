@@ -7,4 +7,4 @@ import { ConfigService } from '@nestjs/config';
   imports: [AlertsModule],
   providers: [SensorStatusService, ConfigService],
 })
-export class SensorStatusModule { }
+export class SensorStatusModule {}

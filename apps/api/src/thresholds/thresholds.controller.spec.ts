@@ -61,7 +61,9 @@ describe('ThresholdsController', () => {
     };
     mockThresholdsService.findOne.mockResolvedValue(threshold);
     const result = await controller.findOne('threshold-id-1');
-    expect(mockThresholdsService.findOne).toHaveBeenCalledWith('threshold-id-1');
+    expect(mockThresholdsService.findOne).toHaveBeenCalledWith(
+      'threshold-id-1',
+    );
     expect(result).toEqual(threshold);
   });
 

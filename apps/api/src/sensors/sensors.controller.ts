@@ -32,7 +32,7 @@ import { FarmOwnershipGuard } from 'src/farms/guards/farm-ownership.guard';
 @Controller('farms/:farmId/sensors')
 @UseFilters(SensorInactiveFilter)
 export class SensorsController {
-  constructor(private readonly sensorsService: SensorsService) { }
+  constructor(private readonly sensorsService: SensorsService) {}
 
   @ApiBody({ type: CreateSensorDto })
   @ApiOperation({ summary: 'Criar um novo sensor para uma plantação' })

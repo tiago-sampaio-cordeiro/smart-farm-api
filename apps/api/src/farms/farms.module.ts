@@ -7,4 +7,4 @@ import { FarmOwnershipGuard } from './guards/farm-ownership.guard';
   controllers: [FarmsController],
   providers: [FarmsService, FarmOwnershipGuard],
 })
-export class FarmsModule { }
+export class FarmsModule {}

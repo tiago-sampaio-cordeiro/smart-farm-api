@@ -8,4 +8,4 @@ import { ThresholdOwnershipGuard } from './guards/threshold-ownership.guard';
   providers: [ThresholdsService, ThresholdOwnershipGuard],
   exports: [ThresholdsService],
 })
-export class ThresholdsModule { }
+export class ThresholdsModule {}

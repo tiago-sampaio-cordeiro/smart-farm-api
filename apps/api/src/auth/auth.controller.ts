@@ -28,7 +28,7 @@ import {
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {}
 
   @ApiBody({
     type: RegisterDto,
@@ -108,6 +108,8 @@ export class AuthController {
   @UseGuards(AuthGuard('google'))
   async googleCallback(@Req() request, @Res() response: Response) {
     const { access_token } = await this.authService.googleLogin(request.user);
-    response.redirect(`http://localhost:5173/auth/callback?token=${access_token}`);
+    response.redirect(
+      `http://localhost:5173/auth/callback?token=${access_token}`,
+    );
   }
 }
