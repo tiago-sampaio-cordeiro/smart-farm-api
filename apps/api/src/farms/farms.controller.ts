@@ -9,6 +9,7 @@ import {
   Patch,
   Post,
   Put,
+  Req,
   UseFilters,
   UseGuards,
 } from '@nestjs/common';
@@ -26,6 +27,7 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { Roles } from 'src/auth/roles.decorator';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { Prisma } from '@prisma/client';
+import { FarmOwnershipGuard } from './guards/farm-ownership.guard';
 
 @ApiTags('farms')
 @Controller('farms')
@@ -42,8 +44,8 @@ export class FarmsController {
   @Roles('USER')
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  create(@Body() body: CreateFarmDto) {
-    return this.farmsService.create(body);
+  create(@Req() req: any, @Body() body: CreateFarmDto) {
+    return this.farmsService.create({ ...body, userId: req.user.id });
   }
 
   @ApiOperation({ summary: 'Listar todas as plantações' })
@@ -56,15 +58,15 @@ export class FarmsController {
   @Roles('USER')
   @Get()
   @HttpCode(HttpStatus.OK)
-  findAll() {
-    return this.farmsService.findAll();
+  findAll(@Req() req: any) {
+    return this.farmsService.findAllByUser(req.user.id);
   }
 
   @ApiOperation({ summary: 'Buscar uma plantação pelo cuid()' })
   @ApiResponse({ status: 200, description: 'Plantação encontrada com sucesso' })
   @ApiResponse({ status: 404, description: 'Plantação não encontrada' })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard, FarmOwnershipGuard)
   @Roles('USER')
   @Get(':id')
   @HttpCode(HttpStatus.OK)
@@ -80,7 +82,7 @@ export class FarmsController {
   @ApiResponse({ status: 400, description: 'Dados inválidos' })
   @ApiResponse({ status: 404, description: 'Plantação não encontrada' })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard, FarmOwnershipGuard)
   @Roles('USER')
   @Put(':id')
   @HttpCode(HttpStatus.OK)
@@ -97,7 +99,7 @@ export class FarmsController {
   @ApiResponse({ status: 400, description: 'Dados inválidos' })
   @ApiResponse({ status: 404, description: 'Plantação não encontrada' })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard, FarmOwnershipGuard)
   @Roles('USER')
   @Patch(':id')
   @HttpCode(HttpStatus.OK)
@@ -109,7 +111,7 @@ export class FarmsController {
   @ApiResponse({ status: 204, description: 'Plantação removida com sucesso' })
   @ApiResponse({ status: 404, description: 'Plantação não encontrada' })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard, FarmOwnershipGuard)
   @Roles('USER')
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)

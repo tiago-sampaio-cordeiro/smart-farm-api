@@ -25,6 +25,7 @@ import {
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { Roles } from 'src/auth/roles.decorator';
 import { RolesGuard } from 'src/auth/roles.guard';
+import { ThresholdOwnershipGuard } from './guards/threshold-ownership.guard';
 
 @ApiTags('thresholds')
 @Controller('thresholds')
@@ -37,7 +38,7 @@ export class ThresholdsController {
   @ApiResponse({ status: 201, description: 'parâmetros criados com sucesso' })
   @ApiResponse({ status: 400, description: 'Dados inválidos' })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard, ThresholdOwnershipGuard)
   @Roles('USER')
   @Post()
   @HttpCode(201)
@@ -52,7 +53,7 @@ export class ThresholdsController {
   })
   @ApiResponse({ status: 404, description: 'Parâmetros não encontrados' })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard, ThresholdOwnershipGuard)
   @Roles('USER')
   @Get('farm/:farmId')
   @HttpCode(200)
@@ -67,7 +68,7 @@ export class ThresholdsController {
   })
   @ApiResponse({ status: 404, description: 'Parâmetros não encontrados' })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard, ThresholdOwnershipGuard)
   @Roles('USER')
   @Get(':id')
   @HttpCode(200)
@@ -84,7 +85,7 @@ export class ThresholdsController {
   @ApiResponse({ status: 400, description: 'Dados inválidos' })
   @ApiResponse({ status: 404, description: 'Parâmetros não encontrados' })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard, ThresholdOwnershipGuard)
   @Roles('USER')
   @Put(':id')
   @HttpCode(200)
@@ -101,7 +102,7 @@ export class ThresholdsController {
   @ApiResponse({ status: 400, description: 'Dados inválidos' })
   @ApiResponse({ status: 404, description: 'Parâmetros não encontrados' })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard, ThresholdOwnershipGuard)
   @Roles('USER')
   @Patch(':id')
   @HttpCode(200)
@@ -116,7 +117,7 @@ export class ThresholdsController {
   @ApiResponse({ status: 204, description: 'Parâmetros removidos com sucesso' })
   @ApiResponse({ status: 404, description: 'Parâmetros não encontrados' })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard, ThresholdOwnershipGuard)
   @Roles('USER')
   @Delete(':id')
   @HttpCode(204)

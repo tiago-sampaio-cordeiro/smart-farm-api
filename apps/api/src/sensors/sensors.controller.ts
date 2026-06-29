@@ -26,6 +26,7 @@ import {
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { Roles } from 'src/auth/roles.decorator';
 import { RolesGuard } from 'src/auth/roles.guard';
+import { FarmOwnershipGuard } from 'src/farms/guards/farm-ownership.guard';
 
 @ApiTags('sensors')
 @Controller('farms/:farmId/sensors')
@@ -41,7 +42,7 @@ export class SensorsController {
   @ApiBearerAuth()
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard, FarmOwnershipGuard)
   @Roles('USER')
   async create(@Param('farmId') farmId: string, @Body() body: CreateSensorDto) {
     return this.sensorsService.create({ ...body, farmId });
@@ -56,7 +57,7 @@ export class SensorsController {
   @ApiBearerAuth()
   @Get()
   @HttpCode(HttpStatus.OK)
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard, FarmOwnershipGuard)
   @Roles('USER')
   async findAll(@Param('farmId') farmId: string) {
     return this.sensorsService.findByFarm(farmId);
@@ -68,7 +69,7 @@ export class SensorsController {
   @ApiBearerAuth()
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard, FarmOwnershipGuard)
   @Roles('USER')
   async findOne(@Param('id') id: string) {
     return this.sensorsService.findOne(id);
@@ -99,7 +100,7 @@ export class SensorsController {
   @ApiBearerAuth()
   @Patch(':id')
   @HttpCode(HttpStatus.OK)
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard, FarmOwnershipGuard)
   @Roles('USER')
   async partialUpdate(
     @Param('id') id: string,
@@ -114,7 +115,7 @@ export class SensorsController {
   @ApiBearerAuth()
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard, FarmOwnershipGuard)
   @Roles('USER')
   async remove(@Param('id') id: string) {
     this.sensorsService.remove(id);

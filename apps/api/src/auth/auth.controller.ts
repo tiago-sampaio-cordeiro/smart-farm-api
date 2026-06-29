@@ -7,6 +7,7 @@ import {
   UseGuards,
   Req,
   Get,
+  Res,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
@@ -15,6 +16,7 @@ import { JwtAuthGuard } from './jwt-auth.guard';
 import { AuthGuard } from '@nestjs/passport';
 import { Roles } from './roles.decorator';
 import { RolesGuard } from './roles.guard';
+import { Response } from 'express';
 import {
   ApiBearerAuth,
   ApiBody,
@@ -104,7 +106,10 @@ export class AuthController {
   @Get('google/callback')
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard('google'))
-  async googleCallback(@Req() request) {
-    return this.authService.googleLogin(request.user);
+  async googleCallback(@Req() request, @Res() response: Response) {
+    const { access_token } = await this.authService.googleLogin(request.user);
+    response.redirect(
+      `http://localhost:5173/auth/callback?token=${access_token}`,
+    );
   }
 }

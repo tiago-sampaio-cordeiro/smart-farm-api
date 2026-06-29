@@ -8,13 +8,20 @@ import { JwtStrategy } from './jwt.strategy'; // (criaremos em breve)
 import { GoogleStrategy } from './google.strategy';
 import { PrismaService } from 'src/prisma/prisma.service'; // ajuste o path conforme seu projeto
 import { RolesGuard } from './roles.guard';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
     PassportModule.register({ defaultStrategy: 'jwt' }),
-    JwtModule.register({
-      secret: process.env.JWT_SECRET || 'minha_chave_secreta',
-      signOptions: { expiresIn: (process.env.JWT_EXPIRES_IN || '8h') as any },
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        secret: configService.get<string>('JWT_SECRET'),
+        signOptions: {
+          expiresIn: configService.get<string>('JWT_EXPIRES_IN') || '8h',
+        },
+      }),
+      inject: [ConfigService],
     }),
   ],
   controllers: [AuthController],
