@@ -1,5 +1,12 @@
 # Smart-farm-api
 
+**Status do Sistema:**
+
+[![CI - Develop (Laboratório)](https://github.com/tiago-sampaio-cordeiro/smart-farm-api/actions/workflows/ci.yml/badge.svg?branch=develop)](https://github.com/tiago-sampaio-cordeiro/smart-farm-api/actions/workflows/ci.yml)
+
+[![CI - Main (Produção)](https://github.com/tiago-sampaio-cordeiro/smart-farm-api/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/tiago-sampaio-cordeiro/smart-farm-api/actions/workflows/ci.yml)
+
+
 **Link em Produção:** [Aguardando Deploy na Nuvem]
 **Autor:** [Tiago Sampaio]
 

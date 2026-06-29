@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../contexts/AuthContext'
 import Layout from '../components/Layout'
+import { API_URL } from '../config/api'
 
 interface Farm {
     id: string
@@ -36,7 +37,7 @@ export default function Sensors() {
 
     const fetchFarms = async () => {
         try {
-            const res = await fetch('http://localhost:3000/farms', {
+            const res = await fetch(`${API_URL}/farms`, {
                 headers: { Authorization: `Bearer ${token}` },
             })
             const data = await res.json()
@@ -53,7 +54,7 @@ export default function Sensors() {
     const fetchSensors = async (farmId: string) => {
         setLoading(true)
         try {
-            const res = await fetch(`http://localhost:3000/farms/${farmId}/sensors`, {
+            const res = await fetch(`${API_URL}/farms/${farmId}/sensors`, {
                 headers: { Authorization: `Bearer ${token}` },
             })
             const data = await res.json()
@@ -71,7 +72,7 @@ export default function Sensors() {
         if (!selectedFarm) return
         setCreating(true)
         try {
-            const res = await fetch(`http://localhost:3000/farms/${selectedFarm.id}/sensors`, {
+            const res = await fetch(`${API_URL}/farms/${selectedFarm.id}/sensors`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
