@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../contexts/AuthContext'
 import Layout from '../components/Layout'
+import { API_URL } from '../config/api'
 
 interface Farm {
     id: string
@@ -49,7 +50,7 @@ export default function Measurements() {
 
     const fetchFarms = async () => {
         try {
-            const res = await fetch('http://localhost:3000/farms', {
+            const res = await fetch(`${API_URL}/farms`, {
                 headers: { Authorization: `Bearer ${token}` },
             })
             const data = await res.json()
@@ -64,7 +65,7 @@ export default function Measurements() {
 
     const fetchSensors = async (farmId: string) => {
         try {
-            const res = await fetch(`http://localhost:3000/farms/${farmId}/sensors`, {
+            const res = await fetch(`${API_URL}/farms/${farmId}/sensors`, {
                 headers: { Authorization: `Bearer ${token}` },
             })
             const data = await res.json()
@@ -83,7 +84,7 @@ export default function Measurements() {
             if (from) params.set('from', from)
             if (to) params.set('to', to)
 
-            const res = await fetch(`http://localhost:3000/measurements?${params.toString()}`, {
+            const res = await fetch(`${API_URL}/measurements?${params.toString()}`, {
                 headers: { Authorization: `Bearer ${token}` },
             })
             const data = await res.json()

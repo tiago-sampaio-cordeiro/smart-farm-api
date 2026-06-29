@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import Layout from '../components/Layout'
+import { API_URL } from '../config/api'
 
 interface Farm {
     id: string
@@ -40,7 +41,7 @@ export default function Farms() {
         setLoading(true)
         setError('')
         try {
-            const res = await fetch('http://localhost:3000/farms', {
+            const res = await fetch(`${API_URL}/farms`, {
                 headers: { Authorization: `Bearer ${token}` },
             })
             const data = await res.json()
@@ -50,12 +51,12 @@ export default function Farms() {
 
             const farmsWithStats = await Promise.all(
                 farmsList.map(async (farm) => {
-                    const sensorsRes = await fetch(`http://localhost:3000/farms/${farm.id}/sensors`, {
+                    const sensorsRes = await fetch(`${API_URL}/farms/${farm.id}/sensors`, {
                         headers: { Authorization: `Bearer ${token}` },
                     })
                     const sensorsData = await sensorsRes.json()
 
-                    const alertsRes = await fetch('http://localhost:3000/alerts', {
+                    const alertsRes = await fetch(`${API_URL}/alerts`, {
                         headers: { Authorization: `Bearer ${token}` },
                     })
                     const alertsData = await alertsRes.json()
@@ -81,7 +82,7 @@ export default function Farms() {
         if (!newFarmName.trim()) return
         setCreating(true)
         try {
-            const res = await fetch('http://localhost:3000/farms', {
+            const res = await fetch(`${API_URL}/farms`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

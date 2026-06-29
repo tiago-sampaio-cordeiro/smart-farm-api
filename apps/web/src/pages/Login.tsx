@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useAuth } from '../contexts/AuthContext'
+import { API_URL } from '../config/api'
 
 export default function Login() {
     const [email, setEmail] = useState('')
@@ -13,7 +14,7 @@ export default function Login() {
         setError('')
         setLoading(true)
         try {
-            const response = await fetch('http://localhost:3000/auth/login', {
+            const response = await fetch(`${API_URL}/auth/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password }),
@@ -97,7 +98,7 @@ export default function Login() {
                         {/* Google */}
                         <button
                             type="button"
-                            onClick={() => window.location.href = 'http://localhost:3000/auth/google'}
+                            onClick={() => window.location.href = `${API_URL}/auth/google`}
                             className="w-full flex items-center justify-center gap-3 border border-[#bccac1] py-3 rounded-lg text-sm text-[#3d4943] transition-colors hover:bg-[#f5fbf5]"
                         >
                             <svg className="w-5 h-5" viewBox="0 0 24 24">
