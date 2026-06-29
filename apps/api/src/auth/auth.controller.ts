@@ -108,8 +108,7 @@ export class AuthController {
   @UseGuards(AuthGuard('google'))
   async googleCallback(@Req() request, @Res() response: Response) {
     const { access_token } = await this.authService.googleLogin(request.user);
-    response.redirect(
-      `http://localhost:5173/auth/callback?token=${access_token}`,
-    );
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+    response.redirect(`${frontendUrl}/auth/callback?token=${access_token}`);
   }
 }
